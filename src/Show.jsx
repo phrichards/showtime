@@ -34,8 +34,6 @@ class Show extends Component {
             artists
         } = this.props.data
 
-        console.log('artists in show mount', artists)
-
         this.setState({
             _id, 
             date,
