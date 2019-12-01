@@ -5,10 +5,10 @@ const Schema = mongoose.Schema
 
 // Map to fields in the DB
 const showSchema = exports.schema = new Schema({
-  lineup: Array,
+  artists: Array,
   date: String,
   time: String,
-  location: String,
+  venue: String,
   seen: Boolean,
   ticket: Boolean
 })

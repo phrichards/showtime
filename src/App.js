@@ -29,6 +29,16 @@ class App extends Component {
     this.setState(nextState)
   }
 
+  addNewShow = newShow => {
+    const prevShows = this.state.shows
+    const nextShows = [...prevShows, newShow]
+
+    this.setState({
+      shows: nextShows,
+      newShow: '',
+    })
+  }
+
   render () {
     return (
       <div className='App'>
@@ -38,7 +48,7 @@ class App extends Component {
         <p>Shows</p>
         <Shows shows={this.state.shows} />
         <p>Add a show</p>
-        <ShowForm />
+        <ShowForm addNewShow={this.addNewShow} />
       </div>
     );
   }

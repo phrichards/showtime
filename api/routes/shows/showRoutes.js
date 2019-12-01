@@ -32,20 +32,21 @@ router.route('/add')
     /*
       {
         "showData": {
-          "lineup": ["slowthai", "BROCKHAMPTON"],
+          "artists": ["slowthai", "BROCKHAMPTON"],
           "date": "November 29, 2019",
           "time": "7:00pm",
-          "location": "Ricoh Coliseum",
+          "venue": "Ricoh Coliseum",
           "seen": false,
           "ticket": true
         }
       }
     */
     // Play around with the destructuring if you would like the request to be sent in a different way
-    const { showData } = req.body
+    const { body } = req
+
     try {
       // 2. Create show from data
-      const show = await showService.createShow(showData)
+      const show = await showService.createShow(body)
       // 3. Respond with created show
       res.status(200).send({
         data: [show]
@@ -61,7 +62,8 @@ router.route('/update/:showId')
   .put(async (req, res, next) => {
     const { params } = req
     const { showId } = params
-    const { showData } = req.body
+    const showData = req.body
+  
     try {
       // 2. Create show from data
       const show = await showService.updateShow(showId, showData)
