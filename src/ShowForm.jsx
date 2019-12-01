@@ -29,24 +29,7 @@ class ShowForm extends Component {
     }
 
     componentDidMount() {
-        // if (typeof (this.props.showData) !== 'undefined') {
-        //     const {
-        //         _id,
-        //         date,
-        //         venue,
-        //         artists
-        //     } = this.props.showData
-        // } else {
-        //     const {
-        //         _id,
-        //         date,
-        //         venue,
-        //         artists
-        //     } = this.state
-        // }
-        console.log('form props', this.props)
         if (this.props.showData) {
-            console.log(this.props.showData.artists)
             const artistInputArray = this.props.showData.artists.map(artist => <TextField value={artist} onChange={this.handleArtistChange} name={artist} />)
             this.setState({
                 artistInputs: artistInputArray,
@@ -114,12 +97,8 @@ class ShowForm extends Component {
         }
 
         let url = ''
-        let data = {}
         let method = ''
 
-        console.log('showdata in form', showData)
-
-        console.log(this.props.type)
         if (this.props.type === 'update') {
             url = `/api/shows/update/${this.props.showData._id}`
             method = 'PUT'
@@ -127,10 +106,6 @@ class ShowForm extends Component {
             url = '/api/shows/add'
             method = 'POST'
         }
-
-        console.log(url)
-        console.log(data)
-        console.log('json', JSON.stringify(data))
 
         try {
             const response = await fetch(url, {
@@ -140,28 +115,27 @@ class ShowForm extends Component {
                 },
                 body: JSON.stringify(showData) 
             });
-            console.log('reponse', response)
             const newShow = await response.json()
-            console.log('newshow', newShow)
             
             if (this.props.type && this.props.type === 'update') {
                 this.props.toggleEditForm()
                 this.props.updateShow(newShow)
+            } else {
+                this.props.addNewShow(newShow)
             }
             
-            // this.props.addNewShow(newShow.data[0])
-            // this.setState({
-            //     date: null,
-            //     venue: '',
-            //     artists: [],
-            //     artistInputs: [],
-            //     ticketChecked: false,
-            //     seenChecked: false,
-            // })
         } catch(error) {
             console.error(error)
             throw error
         }
+    }
+
+    deleteShow = async () => {
+        var confirmDelete = window.confirm('Delete this show?')
+        if (confirmDelete) {
+            return this.props.deleteShow(this.props.showData._id)
+        }
+        
     }
 
     render() {
@@ -207,8 +181,20 @@ class ShowForm extends Component {
 
                 {
                 this.props.type 
-                    ? <Button type="submit">Save show</Button>
-                    : <Button type="submit">Add show</Button>
+                    ? 
+                        <>
+                        <Button type="submit">Save show</Button>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            className="delete"
+                            onClick={this.deleteShow}
+                        >
+                            Delete
+                        </Button>
+                        </>
+                    : 
+                        <Button type="submit">Add show</Button>
                 }
             </form>
         )

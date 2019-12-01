@@ -27,16 +27,36 @@ class App extends Component {
     const newState = { shows: data.data }
     const nextState = Object.assign({}, prevState, newState)
     this.setState(nextState)
+    console.log(this.state.shows)
   }
 
   addNewShow = newShow => {
+    console.log('newShow', newShow)
     const prevShows = this.state.shows
     const nextShows = [...prevShows, newShow]
+    console.log('nextshows', nextShows)
 
     this.setState({
       shows: nextShows,
       newShow: '',
     })
+  }
+
+  deleteShow = async id => {
+    try {
+      await fetch(`/api/shows/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      this.setState(prevState => ({ shows: prevState.shows.filter(show => show._id !== id) }));
+
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
   }
 
   render () {
@@ -46,7 +66,7 @@ class App extends Component {
           <h1>Showtime</h1>
         </header>
         <p>Shows</p>
-        <Shows shows={this.state.shows} />
+        <Shows shows={this.state.shows} deleteShow={this.deleteShow}/>
         <p>Add a show</p>
         <ShowForm addNewShow={this.addNewShow} />
       </div>

@@ -72,6 +72,7 @@ exports.updateShow = async (showId, showData) => {
 exports.deleteShow = async (showId) => {
   // 1. Create a show instance
   const show = await Show.findById(showId)
+  console.log('show in delete service', show)
   try {
     // 2. Save show to database
     const deleted = await show.remove({_id: showId})

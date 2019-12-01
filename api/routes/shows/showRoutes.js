@@ -86,7 +86,7 @@ router.route('/delete/:showId')
       // 2. Create show from data
       const show = await showService.deleteShow(showId)
       // 3. Respond with created show
-      res.status(200).send({
+      res.status(204).send({
         data: [show]
       })
     } catch (e) {

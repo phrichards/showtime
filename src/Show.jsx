@@ -72,13 +72,13 @@ class Show extends Component {
     saveEditForm = () => {
         console.log('save')
     }
-
+    
     render() {
         return (
             <Card style={{ maxWidth: 345 }}>
                 <CardContent>
                     {this.state.toggleEditForm
-                        ? <ShowForm type="update" updateShow={this.updateShow} toggleEditForm={this.toggleEditForm} handleVenueChange={this.handleVenueChange} showData={this.props.data} />
+                        ? <ShowForm type="update" updateShow={this.updateShow} toggleEditForm={this.toggleEditForm} handleVenueChange={this.handleVenueChange} showData={this.props.data} deleteShow={this.props.deleteShow} />
                         :
                         <Typography variant="body2" color="textSecondary" component="p">
                             <div>

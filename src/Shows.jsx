@@ -12,7 +12,7 @@ class Shows extends Component {
                     this.props.shows.map((show) => {
                         {
                             return show.seen
-                            ? <Show key={show.id} data={show} />
+                            ? <Show key={show.id} data={show} deleteShow={this.props.deleteShow} />
                             : null
                         }
                     })
@@ -23,7 +23,7 @@ class Shows extends Component {
                     this.props.shows.map((show) => {
                         {
                             return !show.seen
-                                ? <Show key={show.id} data={show} />
+                                ? <Show key={show.id} data={show} deleteShow={this.props.deleteShow} />
                                 : null
                         }
                     })
