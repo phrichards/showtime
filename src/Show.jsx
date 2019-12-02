@@ -42,6 +42,22 @@ class Show extends Component {
         })
     }
 
+    componentWillReceiveProps() {
+        const {
+            _id,
+            date,
+            venue,
+            artists
+        } = this.props.data
+
+        this.setState({
+            _id,
+            date,
+            venue,
+            artists,
+        })
+    }
+
     toggleEditForm = () => {
         console.log('click')
         this.setState({
@@ -52,19 +68,7 @@ class Show extends Component {
     }
 
     updateShow = showData => {
-        const {
-            _id,
-            date,
-            venue,
-            artists
-        } = showData
-
-        this.setState({
-            _id,
-            date,
-            venue,
-            artists,
-        })
+        this.props.updateShow(showData)
     }
 
     saveEditForm = () => {

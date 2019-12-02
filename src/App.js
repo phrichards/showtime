@@ -32,9 +32,18 @@ class App extends Component {
   addNewShow = newShow => {
     const prevShows = this.state.shows
     const nextShows = [...prevShows, newShow.data[0]]
-
     const prevState = this.state
     const newState = { shows: nextShows }
+    const nextState = Object.assign({}, prevState, newState)
+    this.setState(nextState)
+  }
+
+  updateShow = showData => {
+    const prevShows = this.state.shows
+    const prevState = this.state
+    const showToUpdate = prevShows.find(show => show._id === showData.data[0]._id)
+    const updatedShows = this.state.shows.map(show => (show._id === showData.data[0]._id ? Object.assign(show, showData.data[0]) : show))
+    const newState = { shows: updatedShows }
     const nextState = Object.assign({}, prevState, newState)
     this.setState(nextState)
   }
@@ -62,7 +71,7 @@ class App extends Component {
           <h1>Showtime</h1>
         </header>
         <p>Shows</p>
-        <Shows shows={this.state.shows} deleteShow={this.deleteShow} />
+        <Shows shows={this.state.shows} updateShow={this.updateShow} deleteShow={this.deleteShow} />
         <p>Add a show</p>
         <ShowForm addNewShow={this.addNewShow} />
       </div>

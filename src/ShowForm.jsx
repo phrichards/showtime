@@ -54,10 +54,16 @@ class ShowForm extends Component {
 
     handleArtistChange = e => {
         console.log('change')
-        console.log(e.target.value)
-        console.log(this.state.artistInputs)
-        console.log(this.state.artists)
-        this.setState({ artists: [...this.state.artists, e.target.value], });
+        console.log(e)
+        console.log(e.target)
+        console.log('value', e.target.value)
+        console.log('name', e.target.name)
+        console.log('inputs', this.state.artistInputs)
+        console.log('artists', this.state.artists)
+        const thisArtist = this.state.artistInputs.map(input => input.name === e.target.name)
+        console.log(thisArtist)
+        console.log(thisArtist.value)
+        // this.setState({ artistInputs: [...this.state.artistInputs, e.target], });
     }
 
     handleDateChange = date => {
@@ -73,23 +79,23 @@ class ShowForm extends Component {
         
         const artistArray = []
 
-        console.log('length', e.target.artist.length)
+        // console.log('length', e.target.artist.length)
 
-        if (typeof(e.target.artist.length) === 'undefined') {
-            artistArray.push(e.target.artist.value)
-        } else {
-            const artists = Array.from(e.target.artist)
-            artists.forEach(artist => {
-                if (artist.value.length) {
-                    artistArray.push(artist.value)
-                }
-            })
+        // if (typeof(e.target.artist.length) === 'undefined') {
+        //     artistArray.push(e.target.artist.value)
+        // } else {
+        //     const artists = Array.from(e.target.artist)
+        //     artists.forEach(artist => {
+        //         if (artist.value.length) {
+        //             artistArray.push(artist.value)
+        //         }
+        //     })
 
-            console.log('artistArray', artistArray)
-        }
+        //     console.log('artistArray', artistArray)
+        // }
         
         const showData = {
-            artists: artistArray,
+            // artists: artistArray,
             date: this.state.date,
             venue: e.target.venue.value,
             seen: this.state.seenChecked,
