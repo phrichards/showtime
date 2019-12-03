@@ -59,6 +59,8 @@ class ShowForm extends Component {
             return artist = newArtistName
         });
 
+        console.log('newArtists', newArtists)
+
         this.setState({ artists: newArtists });
     };
 
@@ -92,7 +94,7 @@ class ShowForm extends Component {
         // }
         
         const showData = {
-            // artists: artistArray,
+            artists: this.state.artists,
             date: this.state.date,
             venue: e.target.venue.value,
             seen: this.state.seenChecked,
@@ -146,8 +148,7 @@ class ShowForm extends Component {
             <form onSubmit={this.handleFormSubmit}>
                 {this.state.artists.map((artist, index) => (
                     <div className="artist">
-                        <input
-                            type="text"
+                        <TextField
                             placeholder={`Artist #${index + 1} name`}
                             value={artist}
                             onChange={this.handleArtistChange(index)}

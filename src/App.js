@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 
 import './App.css';
 
-import Shows from './Shows'
-import ShowForm from './ShowForm'
+import ShowList from './ShowList'
+import DetailedShow from './DetailedShow'
 
 class App extends Component {
 
@@ -70,10 +76,32 @@ class App extends Component {
         <header className='App-header'>
           <h1>Showtime</h1>
         </header>
-        <p>Shows</p>
-        <Shows shows={this.state.shows} updateShow={this.updateShow} deleteShow={this.deleteShow} />
-        <p>Add a show</p>
-        <ShowForm addNewShow={this.addNewShow} />
+        <Router>
+          <Switch>
+            <Route
+              exact path='/'
+              render={(renderProps) => (
+                <ShowList
+                  {...renderProps}
+                  shows={this.state.shows}
+                  updateShow={this.updateShow} deleteShow={this.deleteShow}
+                  addNewShow={this.addNewShow}
+                />
+              )}
+            />
+            <Route
+              exact path='/show/:showId'
+              render={(renderProps) => {
+                return (
+                    <DetailedShow
+                      {...renderProps}
+                      updateShow={this.updateShow} deleteShow={this.deleteShow}
+                    />
+                  )
+              }}
+            />
+          </Switch>
+        </Router>
       </div>
     );
   }

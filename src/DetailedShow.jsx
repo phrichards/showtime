@@ -10,53 +10,65 @@ import {
 
 import ShowForm from './ShowForm'
 
-class Show extends Component {
+class DetailedShow extends Component {
 
     constructor(props) {
         super(props) 
 
         this.state = {
-            showArtistInput: false,
-            showSaveButton: false,
-            toggleEditForm: false,
-            _id: null,
-            date: null,
-            venue: null,
+            show: {},
+            _id: '',
+            date: '',
+            venue: '',
             artists: [],
+            seen: false,
+            ticket: false
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        console.log('detailed', {...this.props.match.params})
+        const params = { ...this.props.match.params }
+        const showId = params.showId
+
+        const result = await fetch(`/api/shows/${showId}`)
+        const data = await result.json()
+        console.log('show', data)
+
         const {
             _id,
-            date,
-            venue,
-            artists
-        } = this.props.data
-
-        this.setState({
-            _id, 
             date,
             venue,
             artists,
-        })
-    }
-
-    componentWillReceiveProps() {
-        const {
-            _id,
-            date,
-            venue,
-            artists
-        } = this.props.data
+            seen,
+            ticket
+        } = data
 
         this.setState({
             _id,
             date,
             venue,
             artists,
+            seen,
+            ticket
         })
     }
+
+    // componentWillReceiveProps() {
+    //     const {
+    //         _id,
+    //         date,
+    //         venue,
+    //         artists
+    //     } = this.props.data
+
+    //     this.setState({
+    //         _id,
+    //         date,
+    //         venue,
+    //         artists,
+    //     })
+    // }
 
     toggleEditForm = () => {
         console.log('click')
@@ -104,8 +116,6 @@ class Show extends Component {
                                 : <Button onClick={this.toggleEditForm}>Edit Show</Button>
                             }
 
-                            <Button><a href={`/show/${this.state._id}`}>Detail</a></Button>
-
                         </Typography>
                     }
                 </CardContent>
@@ -114,4 +124,4 @@ class Show extends Component {
     }
 }
 
-export default Show
+export default DetailedShow

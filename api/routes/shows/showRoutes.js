@@ -21,6 +21,21 @@ router.route('/')
     }
   })
 
+router.route('/:showId')
+  .get(async (req, res) => {
+    const { params } = req
+    const { showId } = params
+
+    const show = await showService.getShow(showId)
+
+    if (show) {
+      res.json(show)
+    } else {
+      // we got a bad number
+      res.status(404).send()
+    }
+  })
+
 // POST /shows/
 // TODO: don't return 200 if no data is passed. What should be required?
 

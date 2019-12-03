@@ -12,6 +12,16 @@ exports.listShows = async () => {
   }
 }
 
+exports.getShow = async (showId) => {
+  try {
+    const show = await Show.findById(showId)
+    return show || {}
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
 // Create a new show that will be added to the database
 exports.createShow = async (showData = {}) => {
   
@@ -33,9 +43,6 @@ exports.createShow = async (showData = {}) => {
 exports.updateShow = async (showId, showData) => {
   const show = await Show.findById(showId)
 
-  console.log('showData in service', showData)
-  
-
   const {
     artists,
     date,
@@ -45,17 +52,12 @@ exports.updateShow = async (showId, showData) => {
     ticket
   } = showData
 
-  console.log('artists', artists)
-  console.log('venue', venue)
-  
-  // show.artists = artists ? artists : show.artists,
+  show.artists = artists ? artists : show.artists,
   show.date = date ? date : show.date,
   show.time = time ? time : show.time,
   show.venue = venue ? venue : show.venue,
   show.seen = seen
   show.ticket = ticket
-  
-  console.log('show in service', show)
 
   try {
     // 2. Save show to database
