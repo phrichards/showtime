@@ -52,19 +52,16 @@ class ShowForm extends Component {
         this.setState({ venue: e.target.value })
     }
 
-    handleArtistChange = e => {
-        console.log('change')
-        console.log(e)
-        console.log(e.target)
-        console.log('value', e.target.value)
-        console.log('name', e.target.name)
-        console.log('inputs', this.state.artistInputs)
-        console.log('artists', this.state.artists)
-        const thisArtist = this.state.artistInputs.map(input => input.name === e.target.name)
-        console.log(thisArtist)
-        console.log(thisArtist.value)
-        // this.setState({ artistInputs: [...this.state.artistInputs, e.target], });
-    }
+    handleArtistChange = index => e => {
+        const newArtists = this.state.artists.map((artist, artistIndex) => {
+            if (index !== artistIndex) return artist;
+            const newArtistName = e.target.value
+            return artist = newArtistName
+        });
+
+        this.setState({ artists: newArtists });
+    };
+
 
     handleDateChange = date => {
         this.setState({ date: date })
@@ -147,7 +144,16 @@ class ShowForm extends Component {
     render() {
         return (
             <form onSubmit={this.handleFormSubmit}>
-                { this.state.artistInputs.map(input => <p>{input}</p> )}
+                {this.state.artists.map((artist, index) => (
+                    <div className="artist">
+                        <input
+                            type="text"
+                            placeholder={`Artist #${index + 1} name`}
+                            value={artist}
+                            onChange={this.handleArtistChange(index)}
+                        />
+                    </div>
+                ))}
                 
                 <p><Button onClick={this.handleAddArtistClick}>Add an artist</Button></p>
                 
