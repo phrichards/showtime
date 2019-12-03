@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose')
 const express = require('express')
+const path = require('path')
 
 // 1. Create main express intance
 const app = express()
@@ -11,6 +12,9 @@ const { router: showRoutes } = require('./routes/shows/showRoutes')
 
 // 3. Require conatants
 const { URL, PORT } = require('./utils/constants')
+
+const publicPath = path.resolve(__dirname, '..', 'build');
+app.use('/', express.static(publicPath))
 
 // 4. Ensure that the router is parsing the request body to appropriately format incoming requests
 app.use(express.json())
