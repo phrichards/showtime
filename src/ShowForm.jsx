@@ -77,22 +77,6 @@ class ShowForm extends Component {
         e.preventDefault()
         
         const artistArray = []
-
-        // console.log('length', e.target.artist.length)
-
-        // if (typeof(e.target.artist.length) === 'undefined') {
-        //     artistArray.push(e.target.artist.value)
-        // } else {
-        //     const artists = Array.from(e.target.artist)
-        //     artists.forEach(artist => {
-        //         if (artist.value.length) {
-        //             artistArray.push(artist.value)
-        //         }
-        //     })
-
-        //     console.log('artistArray', artistArray)
-        // }
-        
         const showData = {
             artists: this.state.artists,
             date: this.state.date,
@@ -104,6 +88,8 @@ class ShowForm extends Component {
         let url = ''
         let method = ''
 
+        console.log('sho form', this.props)
+
         if (this.props.type === 'update') {
             url = `/api/shows/update/${this.props.showData._id}`
             method = 'PUT'
@@ -111,6 +97,9 @@ class ShowForm extends Component {
             url = '/api/shows/add'
             method = 'POST'
         }
+
+        console.log('url', url)
+        console.log('method', method)
 
         try {
             const response = await fetch(url, {

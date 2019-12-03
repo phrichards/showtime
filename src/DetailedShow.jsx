@@ -26,15 +26,16 @@ class DetailedShow extends Component {
         }
     }
 
-    async componentDidMount() {
-        console.log('detailed', {...this.props.match.params})
+    componentDidMount() {
         const params = { ...this.props.match.params }
         const showId = params.showId
+        this.fetchShow(showId)
+    }
 
+    fetchShow = async showId => {
         const result = await fetch(`/api/shows/${showId}`)
         const data = await result.json()
-        console.log('show', data)
-
+    
         const {
             _id,
             date,
@@ -50,41 +51,21 @@ class DetailedShow extends Component {
             venue,
             artists,
             seen,
-            ticket
+            ticket,
+            show: data
         })
     }
 
-    // componentWillReceiveProps() {
-    //     const {
-    //         _id,
-    //         date,
-    //         venue,
-    //         artists
-    //     } = this.props.data
-
-    //     this.setState({
-    //         _id,
-    //         date,
-    //         venue,
-    //         artists,
-    //     })
-    // }
-
     toggleEditForm = () => {
-        console.log('click')
         this.setState({
-            // showArtistInput: true,
-            // showSaveButton: true
             toggleEditForm: !this.state.toggleEditForm,
         })
     }
 
-    updateShow = showData => {
-        this.props.updateShow(showData)
-    }
-
-    saveEditForm = () => {
-        console.log('save')
+    updateShow = async showData => {
+        await this.props.updateShow(showData)
+        const showId = showData.data[0]._id 
+        this.fetchShow(showId)
     }
     
     render() {
@@ -92,7 +73,7 @@ class DetailedShow extends Component {
             <Card style={{ maxWidth: 345 }}>
                 <CardContent>
                     {this.state.toggleEditForm
-                        ? <ShowForm type="update" updateShow={this.updateShow} toggleEditForm={this.toggleEditForm} handleVenueChange={this.handleVenueChange} showData={this.props.data} deleteShow={this.props.deleteShow} />
+                        ? <ShowForm type="update" updateShow={this.updateShow} toggleEditForm={this.toggleEditForm} handleVenueChange={this.handleVenueChange} showData={this.state.show} deleteShow={this.props.deleteShow} />
                         :
                         <Typography variant="body2" color="textSecondary" component="p">
                             <div>
@@ -111,10 +92,7 @@ class DetailedShow extends Component {
 
                             </div>
 
-                            {this.state.showSaveButton
-                                ? <Button onClick={this.saveEditForm}>Save</Button>
-                                : <Button onClick={this.toggleEditForm}>Edit Show</Button>
-                            }
+                            <Button onClick={this.toggleEditForm}>Edit Show</Button>
 
                         </Typography>
                     }
