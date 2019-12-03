@@ -13,7 +13,7 @@ const { router: showRoutes } = require('./routes/shows/showRoutes')
 // 3. Require conatants
 const { URL, PORT } = require('./utils/constants')
 
-const publicPath = path.resolve(__dirname, '..', 'build');
+const publicPath = path.resolve(__dirname, '..', 'build')
 app.use('/', express.static(publicPath))
 
 // 4. Ensure that the router is parsing the request body to appropriately format incoming requests
@@ -23,11 +23,21 @@ app.use(express.urlencoded({ extended: true }))
 // 5. Utilise routes
 app.use('/api/shows', showRoutes)
 
+app.use('/*', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'))
+})
+
 // 6. Define configuration for mongodb
 const MONGO_CONFIG = {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }
+
+// Probably handle some errors
+// [redirect, 404, client error, server error]
+app.use((err, req, res, next) => {
+
+})
 
 // 7. Start server
 mongoose
