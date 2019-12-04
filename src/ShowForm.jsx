@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 
 import MomentUtils from '@date-io/moment'
 import {
@@ -46,9 +47,15 @@ class ShowForm extends Component {
     }
 
     handleAddArtistClick = () => {
-        this.setState(prevState => ({
-            artistInputs: [...prevState.artistInputs, <TextField placeholder="Artist/Band" name="artist" onChange={this.handleArtistChange} />]
-        }))
+        // this.setState(prevState => ({
+        //     artistInputs: [...prevState.artistInputs, <TextField placeholder="Artist/Band" name="artist" onChange={this.handleArtistChange} />]
+        // }))
+        const prevArtists = this.state.artists
+        const nextArtists = [...prevArtists, '']
+        const prevState = this.state
+        const newState = { artists: nextArtists }
+        const nextState = Object.assign({}, prevState, newState)
+        this.setState(nextState)
     }
 
     handleVenueChange = e => {
@@ -113,6 +120,8 @@ class ShowForm extends Component {
             } else {
                 this.props.addNewShow(newShow)
             }
+
+            return this.props.history.push("/")
             
         } catch(error) {
             console.error(error)
@@ -123,7 +132,8 @@ class ShowForm extends Component {
     deleteShow = async () => {
         var confirmDelete = window.confirm('Delete this show?')
         if (confirmDelete) {
-            return this.props.deleteShow(this.props.showData._id)
+            this.props.deleteShow(this.props.showData._id)
+            return this.props.history.push("/")
         }
         
     }
@@ -210,4 +220,4 @@ class ShowForm extends Component {
     }
 }
 
-export default ShowForm
+export default withRouter(ShowForm)

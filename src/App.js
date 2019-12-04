@@ -15,6 +15,7 @@ import './App.css';
 
 import ShowList from './ShowList'
 import DetailedShow from './DetailedShow'
+import AddShow from './AddShow'
 
 class App extends Component {
 
@@ -68,7 +69,7 @@ class App extends Component {
         },
       });
       this.setState(prevState => ({ shows: prevState.shows.filter(show => show._id !== id) }));
-
+      console.log('deleted')
     } catch (error) {
       console.error(error)
       throw error
@@ -105,6 +106,17 @@ class App extends Component {
                           updateShow={this.updateShow} deleteShow={this.deleteShow}
                         />
                       )
+                  }}
+                />
+                <Route
+                  exact path='/add'
+                  render={(renderProps) => {
+                    return (
+                      <AddShow
+                        {...renderProps}
+                        addNewShow={this.addNewShow} deleteShow={this.deleteShow}
+                      />
+                    )
                   }}
                 />
               </Switch>
