@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
+import moment from 'moment';
 
 import {
     Card,
     CardContent,
+    CardMedia,
     Typography,
     Button,
-    TextField
+    TextField,
+    List,
+    ListItem,
+    ListItemText,
 } from '@material-ui/core'
 
 import ShowForm from './ShowForm'
@@ -70,7 +75,7 @@ class DetailedShow extends Component {
     
     render() {
         return (
-            <Card style={{ maxWidth: 345 }}>
+            <Card style={{ maxWidth: 1200 }}>
                 <CardContent>
                     {this.state.toggleEditForm
                         ? <ShowForm type="update" updateShow={this.updateShow} toggleEditForm={this.toggleEditForm} handleVenueChange={this.handleVenueChange} showData={this.state.show} deleteShow={this.props.deleteShow} />
@@ -78,21 +83,36 @@ class DetailedShow extends Component {
                         <Typography variant="body2" color="textSecondary" component="p">
                             <div>
 
-                                <p>Lineup</p>
+                                <h2>Lineup</h2>
                                 
-                                <ul>
+                                <List>
                                 {this.state.artists.map(artist => {
                                     return this.state.showArtistInput 
                                         ? <TextField placeholder={artist} name="artist" />
-                                        : <li>{artist}</li>
+                                        : <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
+                                            <ListItemText>{artist}</ListItemText>
+                                        </ListItem>
                                 })}
-                                </ul>
-                                
-                                {this.state.venue} - {this.state.date}
+                                </List>                    
+
+                                <h2>Location</h2>
+                                <List>
+                                    <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
+                                        <ListItemText>{this.state.venue}</ListItemText>
+                                    </ListItem>
+                                    <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
+                                        <ListItemText>{moment(this.state.date).format('lll')}</ListItemText>
+                                    </ListItem>
+                                </List>
 
                             </div>
+                            <CardMedia
+                                style={{height: 0, paddingTop: '56.25%'}}
+                                image="../img/sample.jpg"
+                            />
 
-                            <Button onClick={this.toggleEditForm}>Edit Show</Button>
+                            <Button variant="contained" color="primary" onClick={this.toggleEditForm}>Edit Show</Button>
+                            <Button variant="contained" color="secondary" href="/">Back</Button>                      
 
                         </Typography>
                     }

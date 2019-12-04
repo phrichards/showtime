@@ -6,8 +6,8 @@ class Shows extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Seen Shows</h1>
+            <div className="show-list">
+                <h1>Shows I've Seen</h1>
                 {
                     this.props.shows.map((show) => {
                         {

@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
+import moment from 'moment';
 
 import {
     Card,
     CardContent,
     Typography,
     Button,
-    TextField
+    TextField,
+    List,
+    ListItem,
+    ListItemText,
+    Grid
 } from '@material-ui/core'
 
 import ShowForm from './ShowForm'
@@ -44,21 +49,31 @@ class Show extends Component {
 
     render() {
         return (
-            <Card style={{ maxWidth: 345 }}>
+            <Card style={{ maxWidth: 600, margin: 10 }}>
                 <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p">
                             <div>
-                                <p>Lineup</p>
-                                <ul>
+                                <h2>Lineup</h2>
+                                <List>
                                 {this.state.artists.map(artist => {
                                     return this.state.showArtistInput 
                                         ? <TextField placeholder={artist} name="artist" />
-                                        : <li>{artist}</li>
+                                        : <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
+                                            <ListItemText>{artist}</ListItemText>
+                                        </ListItem>
                                 })}
-                                </ul>
-                                {this.state.venue} - {this.state.date}
+                                </List>
+                                <h2>Location</h2>
+                                <List>
+                                    <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
+                                        <ListItemText>{this.state.venue}</ListItemText>
+                                    </ListItem>
+                                    <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
+                                    <ListItemText>{moment(this.state.date).format('lll')}</ListItemText>
+                                    </ListItem>
+                                </List>
                             </div>
-                            <Button><a href={`/show/${this.state._id}`}>Detail</a></Button>
+                            <Button variant="contained" color="primary" href={`/show/${this.state._id}`}>Detail</Button>
                         </Typography>
                 </CardContent>
             </Card>

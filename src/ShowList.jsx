@@ -8,9 +8,8 @@ class ShowList extends Component {
     render() {
         return (
             <>
-                <p>Shows</p>
                 <Shows shows={this.props.shows} updateShow={this.props.updateShow} deleteShow={this.props.deleteShow} />
-                <p>Add a show</p>
+                <h2>Add a show</h2>
                 <ShowForm addNewShow={this.props.addNewShow} />
             </>
         )

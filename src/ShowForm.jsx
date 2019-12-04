@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 
-import DateFnsUtils from '@date-io/date-fns';
+import MomentUtils from '@date-io/moment'
 import {
     DateTimePicker,
     MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
+} from '@material-ui/pickers'
 
 import {
     TextField,
     Button,
     Checkbox,
-    FormControlLabel
+    FormControlLabel,
+    Card,
+    CardContent,
+    Typography,
 } from '@material-ui/core'
 
 class ShowForm extends Component {
@@ -54,15 +57,13 @@ class ShowForm extends Component {
 
     handleArtistChange = index => e => {
         const newArtists = this.state.artists.map((artist, artistIndex) => {
-            if (index !== artistIndex) return artist;
+            if (index !== artistIndex) return artist
             const newArtistName = e.target.value
             return artist = newArtistName
-        });
+        })
 
-        console.log('newArtists', newArtists)
-
-        this.setState({ artists: newArtists });
-    };
+        this.setState({ artists: newArtists })
+    }
 
 
     handleDateChange = date => {
@@ -76,7 +77,6 @@ class ShowForm extends Component {
     handleFormSubmit = async e => {
         e.preventDefault()
         
-        const artistArray = []
         const showData = {
             artists: this.state.artists,
             date: this.state.date,
@@ -88,8 +88,6 @@ class ShowForm extends Component {
         let url = ''
         let method = ''
 
-        console.log('sho form', this.props)
-
         if (this.props.type === 'update') {
             url = `/api/shows/update/${this.props.showData._id}`
             method = 'PUT'
@@ -98,9 +96,6 @@ class ShowForm extends Component {
             method = 'POST'
         }
 
-        console.log('url', url)
-        console.log('method', method)
-
         try {
             const response = await fetch(url, {
                 method: method,
@@ -108,7 +103,8 @@ class ShowForm extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(showData) 
-            });
+            })
+
             const newShow = await response.json()
             
             if (this.props.type && this.props.type === 'update') {
@@ -134,71 +130,82 @@ class ShowForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleFormSubmit}>
-                {this.state.artists.map((artist, index) => (
-                    <div className="artist">
-                        <TextField
-                            placeholder={`Artist #${index + 1} name`}
-                            value={artist}
-                            onChange={this.handleArtistChange(index)}
-                        />
-                    </div>
-                ))}
-                
-                <p><Button onClick={this.handleAddArtistClick}>Add an artist</Button></p>
-                
-                <TextField 
-                    value={this.state.venue}
-                    placeholder="Venue"
-                    name="venue"
-                    onChange={this.handleVenueChange}
-                />
-            
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Card style={{ maxWidth: 600, margin: 10 }}>
+                <CardContent>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        <form onSubmit={this.handleFormSubmit}>
+                            {this.state.artists.map((artist, index) => (
+                                <div className="artist">
+                                    <TextField
+                                        placeholder={`Artist #${index + 1} name`}
+                                        value={artist}
+                                        onChange={this.handleArtistChange(index)}
+                                    />
+                                </div>
+                            ))}
+                            
+                            <p><Button onClick={this.handleAddArtistClick}>Add an artist</Button></p>
+                            
+                            <p>
+                                <TextField 
+                                    value={this.state.venue}
+                                    placeholder="Venue"
+                                    name="venue"
+                                    onChange={this.handleVenueChange}
+                                />
+                            </p>
+                        
+                            <p>
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
 
-                    <DateTimePicker 
-                        value={
-                            this.props.showData 
-                            ? this.props.showData.date 
-                            : this.state.date
-                        } 
-                        onChange={this.handleDateChange} 
-                    />
-                
-                </MuiPickersUtilsProvider>
+                                    <DateTimePicker 
+                                        value={
+                                            this.props.showData 
+                                            ? this.props.showData.date 
+                                            : this.state.date
+                                        } 
+                                        placeholder="Date/Time"
+                                        onChange={this.handleDateChange} 
+                                    />
+                                
+                                </MuiPickersUtilsProvider>
+                            </p>
 
-                <FormControlLabel
-                    control={
-                        <Checkbox checked={this.state.ticketChecked} onChange={this.handleCheckboxClick('ticketChecked')} value="ticketChecked" />
-                    }
-                    label="Do you have a ticket?"
-                />
-                
-                <FormControlLabel
-                    control={
-                        <Checkbox checked={this.state.seenChecked} onChange={this.handleCheckboxClick('seenChecked')} value="seenChecked" />
-                    }
-                    label="Did you attend this show?"
-                />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={this.state.ticketChecked} onChange={this.handleCheckboxClick('ticketChecked')} value="ticketChecked" />
+                                }
+                                label="Do you have a ticket?"
+                            />
+                            
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={this.state.seenChecked} onChange={this.handleCheckboxClick('seenChecked')} value="seenChecked" />
+                                }
+                                label="Did you attend this show?"
+                            />
 
-                {
-                this.props.type 
-                    ? 
-                        <>
-                        <Button type="submit">Save show</Button>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            className="delete"
-                            onClick={this.deleteShow}
-                        >
-                            Delete
-                        </Button>
-                        </>
-                    : 
-                        <Button type="submit">Add show</Button>
-                }
-            </form>
+                            {
+                            this.props.type 
+                                ? 
+                                    <>
+                                    <Button type="submit">Save show</Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        className="delete"
+                                        onClick={this.deleteShow}
+                                    >
+                                        Delete
+                                    </Button>
+                                    </>
+                                : 
+                                    <Button variant="contained" color="primary" type="submit">Add show</Button>
+                            }
+                        </form>
+                    </Typography>
+                </CardContent>
+            </Card>
         )
     }
 }

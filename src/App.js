@@ -6,6 +6,11 @@ import {
   Redirect,
 } from 'react-router-dom';
 
+import {
+  Container,
+  Grid
+} from '@material-ui/core'
+
 import './App.css';
 
 import ShowList from './ShowList'
@@ -72,37 +77,41 @@ class App extends Component {
 
   render() {
     return (
-      <div className='App'>
+      <>
         <header className='App-header'>
           <h1>Showtime</h1>
         </header>
-        <Router>
-          <Switch>
-            <Route
-              exact path='/'
-              render={(renderProps) => (
-                <ShowList
-                  {...renderProps}
-                  shows={this.state.shows}
-                  updateShow={this.updateShow} deleteShow={this.deleteShow}
-                  addNewShow={this.addNewShow}
-                />
-              )}
-            />
-            <Route
-              exact path='/show/:showId'
-              render={(renderProps) => {
-                return (
-                    <DetailedShow
+        <div className='App'>
+          <Container maxWidth="sm">
+            <Router>
+              <Switch>
+                <Route
+                  exact path='/'
+                  render={(renderProps) => (
+                    <ShowList
                       {...renderProps}
+                      shows={this.state.shows}
                       updateShow={this.updateShow} deleteShow={this.deleteShow}
+                      addNewShow={this.addNewShow}
                     />
-                  )
-              }}
-            />
-          </Switch>
-        </Router>
-      </div>
+                  )}
+                />
+                <Route
+                  exact path='/show/:showId'
+                  render={(renderProps) => {
+                    return (
+                        <DetailedShow
+                          {...renderProps}
+                          updateShow={this.updateShow} deleteShow={this.deleteShow}
+                        />
+                      )
+                  }}
+                />
+              </Switch>
+            </Router>
+          </Container>
+        </div>
+      </>
     );
   }
 }
