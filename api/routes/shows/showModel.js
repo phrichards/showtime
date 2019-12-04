@@ -10,7 +10,8 @@ const showSchema = exports.schema = new Schema({
   time: String,
   venue: String,
   seen: Boolean,
-  ticket: Boolean
+  ticket: Boolean,
+  notes: String
 })
 
 exports.model = mongoose.model('Show', showSchema)

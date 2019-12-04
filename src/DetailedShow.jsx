@@ -25,6 +25,7 @@ class DetailedShow extends Component {
             _id: '',
             date: '',
             venue: '',
+            notes: '',
             artists: [],
             seen: false,
             ticket: false
@@ -46,6 +47,7 @@ class DetailedShow extends Component {
             date,
             venue,
             artists,
+            notes,
             seen,
             ticket
         } = data
@@ -55,11 +57,13 @@ class DetailedShow extends Component {
             date,
             venue,
             artists,
+            notes,
             seen,
             ticket,
             show: data
         })
     }
+
 
     toggleEditForm = () => {
         this.setState({
@@ -110,6 +114,8 @@ class DetailedShow extends Component {
                                 style={{height: 0, paddingTop: '56.25%'}}
                                 image="../img/sample.jpg"
                             />
+
+                            <p><TextField disabled multiline rows="10" value={this.state.notes}></TextField></p>
 
                             <Button variant="contained" color="primary" onClick={this.toggleEditForm}>Edit Show</Button>
                             <Button variant="contained" color="secondary" href="/">Back</Button>                      

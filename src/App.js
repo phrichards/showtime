@@ -80,7 +80,7 @@ class App extends Component {
     return (
       <>
         <header className='App-header'>
-          <h1>Showtime</h1>
+          <h1><a href="/">Showtime</a></h1>
         </header>
         <div className='App'>
           <Container maxWidth="sm">

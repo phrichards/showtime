@@ -25,6 +25,7 @@ class ShowForm extends Component {
         this.state = {
             date: null,
             venue: null,
+            notes: null,
             artists: [],
             artistInputs: [],
             ticketChecked: false,
@@ -40,7 +41,8 @@ class ShowForm extends Component {
                 artists: this.props.showData.artists,
                 ticketChecked: this.props.showData.ticket,
                 seenChecked: this.props.showData.seen,
-                venue: this.props.showData.venue
+                venue: this.props.showData.venue,
+                notes: this.props.showData.notes
             })
         }
         
@@ -60,6 +62,10 @@ class ShowForm extends Component {
 
     handleVenueChange = e => {
         this.setState({ venue: e.target.value })
+    }
+
+    handleNotesChange = e => {
+        this.setState({ notes: e.target.value })
     }
 
     handleArtistChange = index => e => {
@@ -87,6 +93,7 @@ class ShowForm extends Component {
         const showData = {
             artists: this.state.artists,
             date: this.state.date,
+            notes: this.state.notes,
             venue: e.target.venue.value,
             seen: this.state.seenChecked,
             ticket: this.state.ticketChecked
@@ -121,6 +128,7 @@ class ShowForm extends Component {
                 this.props.addNewShow(newShow)
             }
 
+            // TODO if you are editing a show this should redirect back to that show
             return this.props.history.push("/")
             
         } catch(error) {
@@ -140,82 +148,80 @@ class ShowForm extends Component {
 
     render() {
         return (
-            <Card style={{ maxWidth: 600, margin: 10 }}>
-                <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <form onSubmit={this.handleFormSubmit}>
-                            {this.state.artists.map((artist, index) => (
-                                <div className="artist">
-                                    <TextField
-                                        placeholder={`Artist #${index + 1} name`}
-                                        value={artist}
-                                        onChange={this.handleArtistChange(index)}
-                                    />
-                                </div>
-                            ))}
-                            
-                            <p><Button onClick={this.handleAddArtistClick}>Add an artist</Button></p>
-                            
-                            <p>
-                                <TextField 
-                                    value={this.state.venue}
-                                    placeholder="Venue"
-                                    name="venue"
-                                    onChange={this.handleVenueChange}
-                                />
-                            </p>
+            <Typography variant="body2" color="textSecondary" component="p">
+                <form onSubmit={this.handleFormSubmit}>
+                    {this.state.artists.map((artist, index) => (
+                        <div className="artist">
+                            <TextField
+                                placeholder={`Artist #${index + 1} name`}
+                                value={artist}
+                                onChange={this.handleArtistChange(index)}
+                            />
+                        </div>
+                    ))}
+                    
+                    <p><Button onClick={this.handleAddArtistClick}>Add an artist</Button></p>
+                    
+                    <p>
+                        <TextField 
+                            value={this.state.venue}
+                            placeholder="Venue"
+                            name="venue"
+                            onChange={this.handleVenueChange}
+                        />
+                    </p>
+                
+                    <p>
+                        <MuiPickersUtilsProvider utils={MomentUtils}>
+
+                            <DateTimePicker 
+                                value={
+                                    this.props.showData 
+                                    ? this.props.showData.date 
+                                    : this.state.date
+                                } 
+                                placeholder="Date/Time"
+                                onChange={this.handleDateChange} 
+                            />
                         
-                            <p>
-                                <MuiPickersUtilsProvider utils={MomentUtils}>
+                        </MuiPickersUtilsProvider>
+                    </p>
 
-                                    <DateTimePicker 
-                                        value={
-                                            this.props.showData 
-                                            ? this.props.showData.date 
-                                            : this.state.date
-                                        } 
-                                        placeholder="Date/Time"
-                                        onChange={this.handleDateChange} 
-                                    />
-                                
-                                </MuiPickersUtilsProvider>
-                            </p>
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={this.state.ticketChecked} onChange={this.handleCheckboxClick('ticketChecked')} value="ticketChecked" />
+                        }
+                        label="Do you have a ticket?"
+                    />
+                    
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={this.state.seenChecked} onChange={this.handleCheckboxClick('seenChecked')} value="seenChecked" />
+                        }
+                        label="Did you attend this show?"
+                    />
 
-                            <FormControlLabel
-                                control={
-                                    <Checkbox checked={this.state.ticketChecked} onChange={this.handleCheckboxClick('ticketChecked')} value="ticketChecked" />
-                                }
-                                label="Do you have a ticket?"
-                            />
-                            
-                            <FormControlLabel
-                                control={
-                                    <Checkbox checked={this.state.seenChecked} onChange={this.handleCheckboxClick('seenChecked')} value="seenChecked" />
-                                }
-                                label="Did you attend this show?"
-                            />
+                    <p><TextField multiline rows="10" onChange={this.handleNotesChange} value={this.state.notes}></TextField></p>
 
-                            {
-                            this.props.type 
-                                ? 
-                                    <>
-                                    <Button type="submit">Save show</Button>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        className="delete"
-                                        onClick={this.deleteShow}
-                                    >
-                                        Delete
-                                    </Button>
-                                    </>
-                                : 
-                                    <Button variant="contained" color="primary" type="submit">Add show</Button>
-                            }
-                        </form>
-                    </Typography>
-                </CardContent>
-            </Card>
+                    {
+                    this.props.type 
+                        ? 
+                            <>
+                            <Button type="submit">Save show</Button>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                className="delete"
+                                onClick={this.deleteShow}
+                            >
+                                Delete
+                            </Button>
+                            </>
+                        : 
+                            <Button variant="contained" color="primary" type="submit">Add show</Button>
+                    }
+                </form>
+            </Typography>
         )
     }
 }

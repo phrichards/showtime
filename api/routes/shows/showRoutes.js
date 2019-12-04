@@ -39,7 +39,6 @@ router.route('/:showId')
 // POST /shows/
 // TODO: don't return 200 if no data is passed. What should be required?
 
-// TODO: When adding, do we validate date and time? pickers are best way to go
 router.route('/add')
   .post(async (req, res, next) => {
     // 1. Get data from request body

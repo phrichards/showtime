@@ -39,7 +39,6 @@ exports.createShow = async (showData = {}) => {
 }
 
 // Update an existing show
-// TODO: Find show by ID, update with post data
 exports.updateShow = async (showId, showData) => {
   const show = await Show.findById(showId)
 
@@ -48,6 +47,7 @@ exports.updateShow = async (showId, showData) => {
     date,
     time,
     venue,
+    notes,
     seen,
     ticket
   } = showData
@@ -56,6 +56,7 @@ exports.updateShow = async (showId, showData) => {
   show.date = date ? date : show.date,
   show.time = time ? time : show.time,
   show.venue = venue ? venue : show.venue,
+  show.notes = notes ? notes : show.notes,
   show.seen = seen
   show.ticket = ticket
 
