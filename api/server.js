@@ -4,11 +4,18 @@ const mongoose = require('mongoose')
 const express = require('express')
 const path = require('path')
 
+const { Error } = mongoose
+const { ValidationError } = Error
+
 // 1. Create main express intance
 const app = express()
 
 // 2. Require routes
 const { router: showRoutes } = require('./routes/shows/showRoutes')
+const { userRouter: userRoutes } = require('./routes/users/userRoutes')
+
+// const handleValidationError = require('./middleware/handleValidatorError')
+// const handleErrors = require('./middleware/handleErrors')
 
 // 3. Require conatants
 const { URL, PORT } = require('./utils/constants')
@@ -22,6 +29,7 @@ app.use(express.urlencoded({ extended: true }))
 
 // 5. Utilise routes
 app.use('/api/shows', showRoutes)
+app.use('/api/users', userRoutes)
 
 app.use('/*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'))
@@ -38,6 +46,10 @@ const MONGO_CONFIG = {
 app.use((err, req, res, next) => {
 
 })
+
+// TODO this is dumb, rename them
+// app.use(handleValidationError.handleValidationError())
+// app.use(handleErrors.handleErrors())
 
 // 7. Start server
 mongoose

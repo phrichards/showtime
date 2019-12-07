@@ -42,20 +42,6 @@ router.route('/:showId')
 router.route('/add')
   .post(async (req, res, next) => {
     // 1. Get data from request body
-    // Format of the request for this destructuring would look like:
-    /*
-      {
-        "showData": {
-          "artists": ["slowthai", "BROCKHAMPTON"],
-          "date": "November 29, 2019",
-          "time": "7:00pm",
-          "venue": "Ricoh Coliseum",
-          "seen": false,
-          "ticket": true
-        }
-      }
-    */
-    // Play around with the destructuring if you would like the request to be sent in a different way
     const { body } = req
 
     try {
@@ -91,7 +77,6 @@ router.route('/update/:showId')
     }
   })
 
-// TODO send back a 204, not the show that was just deleted
 router.route('/delete/:showId')
   .delete(async (req, res, next) => {
     const { params } = req
@@ -100,9 +85,7 @@ router.route('/delete/:showId')
       // 2. Create show from data
       const show = await showService.deleteShow(showId)
       // 3. Respond with created show
-      res.status(204).send({
-        data: [show]
-      })
+      res.status(204).json({ data: "Show deleted" })
     } catch (e) {
       // 4. If error, send to the error handler
       next(e)

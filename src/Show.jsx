@@ -57,7 +57,7 @@ class Show extends Component {
                                 <List>
                                 {this.state.artists.map(artist => {
                                     return this.state.showArtistInput 
-                                        ? <TextField placeholder={artist} name="artist" />
+                                        ? <TextField label={artist} name="artist" />
                                         : <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
                                             <ListItemText>{artist}</ListItemText>
                                         </ListItem>

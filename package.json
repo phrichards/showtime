@@ -29,6 +29,7 @@
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
     "@material-ui/pickers": "^3.2.8",
+    "bcryptjs": "^2.4.3",
     "date-fns": "^2.0.0-beta.5",
     "eslint": "^6.6.0",
     "express": "^4.17.1",

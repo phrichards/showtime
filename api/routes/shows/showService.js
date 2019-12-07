@@ -23,6 +23,8 @@ exports.getShow = async (showId) => {
 }
 
 // Create a new show that will be added to the database
+// TODO: Need some validation here, for empty artists at least
+
 exports.createShow = async (showData = {}) => {
   
   // 1. Create a show instance
@@ -39,6 +41,7 @@ exports.createShow = async (showData = {}) => {
 }
 
 // Update an existing show
+// TODO: Need some validation here, for empty artists at least
 exports.updateShow = async (showId, showData) => {
   const show = await Show.findById(showId)
 
@@ -75,7 +78,6 @@ exports.updateShow = async (showId, showData) => {
 exports.deleteShow = async (showId) => {
   // 1. Create a show instance
   const show = await Show.findById(showId)
-  console.log('show in delete service', show)
   try {
     // 2. Save show to database
     const deleted = await show.remove({_id: showId})

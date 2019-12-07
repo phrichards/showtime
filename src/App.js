@@ -13,6 +13,7 @@ import {
 
 import './App.css';
 
+import Login from './Login'
 import ShowList from './ShowList'
 import DetailedShow from './DetailedShow'
 import AddShow from './AddShow'
@@ -96,6 +97,14 @@ class App extends Component {
                       addNewShow={this.addNewShow}
                     />
                   )}
+                />
+                <Route
+                  exact path='/login'
+                  render={() => {
+                    return (
+                      <Login />
+                    )
+                  }}
                 />
                 <Route
                   exact path='/show/:showId'

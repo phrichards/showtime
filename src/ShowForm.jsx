@@ -49,9 +49,6 @@ class ShowForm extends Component {
     }
 
     handleAddArtistClick = () => {
-        // this.setState(prevState => ({
-        //     artistInputs: [...prevState.artistInputs, <TextField placeholder="Artist/Band" name="artist" onChange={this.handleArtistChange} />]
-        // }))
         const prevArtists = this.state.artists
         const nextArtists = [...prevArtists, '']
         const prevState = this.state
@@ -124,13 +121,11 @@ class ShowForm extends Component {
             if (this.props.type && this.props.type === 'update') {
                 this.props.toggleEditForm()
                 this.props.updateShow(newShow)
+                return this.props.history.push(this.props.location.pathname)
             } else {
                 this.props.addNewShow(newShow)
+                return this.props.history.push("/")
             }
-
-            // TODO if you are editing a show this should redirect back to that show
-            return this.props.history.push("/")
-            
         } catch(error) {
             console.error(error)
             throw error
@@ -153,7 +148,7 @@ class ShowForm extends Component {
                     {this.state.artists.map((artist, index) => (
                         <div className="artist">
                             <TextField
-                                placeholder={`Artist #${index + 1} name`}
+                                label={`Artist #${index + 1} name`}
                                 value={artist}
                                 onChange={this.handleArtistChange(index)}
                             />
@@ -165,7 +160,7 @@ class ShowForm extends Component {
                     <p>
                         <TextField 
                             value={this.state.venue}
-                            placeholder="Venue"
+                            label="Venue"
                             name="venue"
                             onChange={this.handleVenueChange}
                         />
@@ -180,7 +175,7 @@ class ShowForm extends Component {
                                     ? this.props.showData.date 
                                     : this.state.date
                                 } 
-                                placeholder="Date/Time"
+                                label="Date/Time"
                                 onChange={this.handleDateChange} 
                             />
                         
