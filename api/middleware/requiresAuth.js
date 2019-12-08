@@ -3,7 +3,6 @@
 const tokenService = require('../utils/tokenService')
 
 exports.requiresAuth = async (req, res, next) => {
-    console.log('auth')
     const decoded = tokenService.verifyToken(token)
     if (decoded) {
         const { user: { id } } = decoded

@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 
-// TODO: fix this
 const SECRET = 'make it something super secret'
 
 exports.issueToken = (user) => {

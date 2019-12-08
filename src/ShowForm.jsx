@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import MomentUtils from '@date-io/moment'
+import DateFnsUtils from '@date-io/date-fns';
 import {
     DateTimePicker,
     MuiPickersUtilsProvider,
@@ -47,9 +48,6 @@ class ShowForm extends Component {
             this.setState({ userId })
         }
 
-        console.log('verified', verified)
-        console.log('userId', userId)
-
         if (this.props.showData) {
             const artistInputArray = this.props.showData.artists.map(artist => <TextField value={artist} onChange={this.handleArtistChange} name={artist} />)
             this.setState({
@@ -93,6 +91,7 @@ class ShowForm extends Component {
 
 
     handleDateChange = date => {
+        console.log('date', date)
         this.setState({ date: date })
     }
 
@@ -185,7 +184,7 @@ class ShowForm extends Component {
                     </p>
                 
                     <p>
-                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
 
                             <DateTimePicker 
                                 value={

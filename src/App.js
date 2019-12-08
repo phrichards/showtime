@@ -3,12 +3,13 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
+  Redirect
 } from 'react-router-dom';
 
 import {
   Container,
-  Grid
+  Grid,
+  Button
 } from '@material-ui/core'
 
 import './App.css';
@@ -18,7 +19,7 @@ import ShowList from './ShowList'
 import DetailedShow from './DetailedShow'
 import AddShow from './AddShow'
 
-import { getToken, verifyToken } from './services/tokenService';
+import { getToken, verifyToken, removeToken } from './services/tokenService';
 
 class App extends Component {
 
@@ -32,19 +33,24 @@ class App extends Component {
 
     this.state = {
       shows: [],
-      loggedIn: false,
     }
   }
 
   async componentDidMount() {
+    this.fetchShows()
+  }
+
+  fetchShows = async () => {
     const token = getToken()
     const verified = verifyToken(token)
-    const result = await fetch(`/api/shows/user/${verified.user.id}`)
-    const data = await result.json()
-    const prevState = this.state
-    const newState = { shows: data.data }
-    const nextState = Object.assign({}, prevState, newState)
-    this.setState(nextState)
+    if (typeof (verified.user) !== 'undefined') {
+      const result = await fetch(`/api/shows/user/${verified.user.id}`)
+      const data = await result.json()
+      const prevState = this.state
+      const newState = { shows: data.data }
+      const nextState = Object.assign({}, prevState, newState)
+      this.setState(nextState)
+    }
   }
 
   addNewShow = newShow => {
@@ -66,12 +72,6 @@ class App extends Component {
     this.setState(nextState)
   }
 
-  setUserStatus = (status) => {
-    if (status) {
-      this.setState({ loggedIn: true })
-    }
-  }
-
   deleteShow = async id => {
     try {
       const response = await fetch(`/api/shows/delete/${id}`, {
@@ -81,11 +81,15 @@ class App extends Component {
         },
       });
       this.setState(prevState => ({ shows: prevState.shows.filter(show => show._id !== id) }));
-      console.log('deleted')
     } catch (error) {
       console.error(error)
       throw error
     }
+  }
+
+  handleLogout = () => {
+    removeToken()
+    window.location = '/login'
   }
 
   render() {
@@ -93,6 +97,7 @@ class App extends Component {
       <>
         <header className='App-header'>
           <h1><a href="/">Showtime</a></h1>
+          <Button onClick={this.handleLogout}>Log out</Button>
         </header>
         <div className='App'>
           <Container maxWidth="sm">
@@ -115,7 +120,7 @@ class App extends Component {
                   exact path='/login'
                   render={() => {
                     return (
-                      <Login setUserStatus={this.setUserStatus} />
+                      <Login fetchShows={this.fetchShows} />
                     )
                   }}
                 />
@@ -150,4 +155,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

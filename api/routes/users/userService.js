@@ -11,9 +11,9 @@ exports.listUsers = async () => {
     }
 }
 
-exports.getUser = async (userId) => {
+exports.getUser = async (email) => {
     try {
-        const user = await User.findById(userId)
+        const user = await User.findOne({ email })
         return user || {}
     } catch (err) {
         console.error(err)

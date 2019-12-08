@@ -42,11 +42,11 @@ class Login extends Component {
             })
 
             const user = await response.json()
-            console.log("user", user)
+
             if (user.access_token) {
                 const token = user.access_token
-                this.props.setUserStatus(true)
                 setToken(token)
+                this.props.fetchShows()
                 return this.props.history.push("/")
             }
         } catch (error) {
