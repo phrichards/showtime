@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 
+import {
+    Grid,
+    Card
+} from '@material-ui/core'
+
 import Show from './Show'
 
 class Shows extends Component {
@@ -7,27 +12,33 @@ class Shows extends Component {
     render() {
         return (
             <div className="show-list">
-                <h1>Shows I've Seen</h1>
-                {
-                    this.props.shows.map((show) => {
-                        {
-                            return show.seen
-                            ? <Show key={show.id} data={show} updateShow={this.props.updateShow} deleteShow={this.props.deleteShow} />
-                            : null
-                        }
-                    })
-                }
-
-                <h1>Upcoming Shows</h1>
-                {
-                    this.props.shows.map((show) => {
-                        {
-                            return !show.seen
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                    <h1>Shows I've Seen</h1>
+                    {
+                        this.props.shows.map((show) => {
+                            {
+                                return show.seen
                                 ? <Show key={show.id} data={show} updateShow={this.props.updateShow} deleteShow={this.props.deleteShow} />
                                 : null
-                        }
-                    })
-                }
+                            }
+                        })
+                    }
+                    </Grid>
+
+                    <Grid item xs={6}>
+                    <h1>Upcoming Shows</h1>
+                    {
+                        this.props.shows.map((show) => {
+                            {
+                                return !show.seen
+                                    ? <Show key={show.id} data={show} updateShow={this.props.updateShow} deleteShow={this.props.deleteShow} />
+                                    : null
+                            }
+                        })
+                    }
+                    </Grid>
+                </Grid>
             </div>
         )
     }

@@ -160,7 +160,6 @@ class ShowForm extends Component {
     render() {
         return (
             <Typography variant="body2" color="textSecondary" component="p">
-                <p>User ID:</p>
                 <form onSubmit={this.handleFormSubmit}>
                     {this.state.artists.map((artist, index) => (
                         <div className="artist">
@@ -180,6 +179,7 @@ class ShowForm extends Component {
                             label="Venue"
                             name="venue"
                             onChange={this.handleVenueChange}
+                            style={{ width: 400 }}
                         />
                     </p>
                 
@@ -194,6 +194,7 @@ class ShowForm extends Component {
                                 } 
                                 label="Date/Time"
                                 onChange={this.handleDateChange} 
+                                style={{ width: 400 }}
                             />
                         
                         </MuiPickersUtilsProvider>
@@ -208,12 +209,22 @@ class ShowForm extends Component {
                     
                     <FormControlLabel
                         control={
-                            <Checkbox checked={this.state.seenChecked} onChange={this.handleCheckboxClick('seenChecked')} value="seenChecked" />
+                            <Checkbox 
+                                checked={this.state.seenChecked} 
+                                onChange={this.handleCheckboxClick('seenChecked')} value="seenChecked" 
+                            />
                         }
                         label="Did you attend this show?"
                     />
 
-                    <p><TextField multiline rows="10" onChange={this.handleNotesChange} value={this.state.notes}></TextField></p>
+                    <p>
+                        <TextField 
+                            multiline rows="10" 
+                            onChange={this.handleNotesChange} 
+                            value={this.state.notes} 
+                            style={{ width: 400 }}>
+                        </TextField>
+                    </p>
 
                     {
                     this.props.type 

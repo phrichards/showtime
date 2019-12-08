@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import {
     Typography,
     Card,
-    CardContent
+    CardContent,
+    Grid
 } from '@material-ui/core'
 
 import ShowForm from './ShowForm'
@@ -12,14 +13,18 @@ class AddShow extends Component {
 
     render() {
         return (
-            <Card style={{ maxWidth: 600, margin: 10 }}>
-                <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <h2>Add a show</h2>
-                        <ShowForm addNewShow={this.props.addNewShow} />
-                    </Typography>
-                </CardContent>
-            </Card>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                                <h2>Add a show</h2>
+                                <ShowForm addNewShow={this.props.addNewShow} />
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
         )
     }
 }

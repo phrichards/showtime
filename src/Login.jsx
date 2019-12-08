@@ -59,9 +59,9 @@ class Login extends Component {
         return (
             <>
                 <form onSubmit={this.handleSubmit}>
-                    <TextField value={this.state.email} label="Email" onChange={this.handleEmailChange} />
-                    <TextField label="Password" type="password" value={this.state.password} onChange={this.handlePasswordChange} />
-                    <Button variant="contained" color="primary" type="submit">Log In</Button>
+                    <p><TextField fullWidth value={this.state.email} label="Email" onChange={this.handleEmailChange} /></p>
+                    <p><TextField fullWidth label="Password" type="password" value={this.state.password} onChange={this.handlePasswordChange} /></p>
+                    <p><Button variant="contained" color="primary" type="submit">Log In</Button></p>
                 </form>
             </>
         )

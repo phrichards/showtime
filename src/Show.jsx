@@ -10,10 +10,7 @@ import {
     List,
     ListItem,
     ListItemText,
-    Grid
 } from '@material-ui/core'
-
-import ShowForm from './ShowForm'
 
 class Show extends Component {
 
@@ -28,6 +25,7 @@ class Show extends Component {
             date: null,
             venue: null,
             artists: [],
+            ticket: false
         }
     }
 
@@ -36,14 +34,18 @@ class Show extends Component {
             _id,
             date,
             venue,
-            artists
+            artists,
+            ticket
         } = this.props.data
+
+        console.log(this.props.data)
 
         this.setState({
             _id, 
             date,
             venue,
             artists,
+            ticket
         })
     }
 
@@ -53,7 +55,7 @@ class Show extends Component {
                 <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p">
                             <div>
-                                <h2>Lineup</h2>
+                                <h3>Lineup</h3>
                                 <List>
                                 {this.state.artists.map(artist => {
                                     return this.state.showArtistInput 
@@ -63,15 +65,20 @@ class Show extends Component {
                                         </ListItem>
                                 })}
                                 </List>
-                                <h2>Location</h2>
+                                <h3>Time & Location</h3>
                                 <List>
                                     <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
                                         <ListItemText>{this.state.venue}</ListItemText>
                                     </ListItem>
                                     <ListItem style={{ textAlign: 'center', margin: 0, padding: 0 }}>
-                                    <ListItemText>{moment(this.state.date).format('lll')}</ListItemText>
+                                        <ListItemText>{moment(this.state.date).format('lll')}</ListItemText>
                                     </ListItem>
                                 </List>
+                                {
+                                    !this.state.ticket
+                                    ? <p style={{color: 'red'}}>Remember to buy a ticket!</p>
+                                    : null
+                                }
                             </div>
                             <Button variant="contained" color="primary" href={`/show/${this.state._id}`}>Detail</Button>
                         </Typography>

@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  max-width: 800px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
 }
@@ -41,4 +41,10 @@ h1 a {
 
 h2 {
   margin: 5px;
+}
+
+h3 {
+  margin: 5px;
+  text-decoration: underline;
+  color: #000
 }

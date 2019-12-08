@@ -97,10 +97,9 @@ class App extends Component {
       <>
         <header className='App-header'>
           <h1><a href="/">Showtime</a></h1>
-          <Button onClick={this.handleLogout}>Log out</Button>
         </header>
         <div className='App'>
-          <Container maxWidth="sm">
+          <Container maxWidth="lg">
             <Router>
               <Switch>
                 <Route
@@ -148,6 +147,11 @@ class App extends Component {
                 />
               </Switch>
             </Router>
+            {
+              getToken()
+                ? <p><Button variant="contained" color="secondary" onClick={this.handleLogout}>Log out</Button></p>
+                : null
+            }
           </Container>
         </div>
       </>
