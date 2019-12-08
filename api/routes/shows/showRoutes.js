@@ -3,7 +3,11 @@
 const express = require('express')
 const router = express.Router()
 
+const auth = require('../../middleware/requiresAuth');
+
 const showService = require('./showService')
+
+// router.use(requiresAuth)
 
 // GET /shows/
 router.route('/')
@@ -25,14 +29,36 @@ router.route('/:showId')
   .get(async (req, res) => {
     const { params } = req
     const { showId } = params
+    try {
+      const show = await showService.getShow(showId)
 
-    const show = await showService.getShow(showId)
+      if (show) {
+        res.json(show)
+      } else {
+        // we got a bad number
+        res.status(404).send()
+      }
+    } catch (e) {
+      console.log(e)
+      throw(e)
+    }
+  })
 
-    if (show) {
-      res.json(show)
-    } else {
-      // we got a bad number
-      res.status(404).send()
+router.route('/user/:userId')
+  .get(async (req, res, next) => {
+    const { params } = req
+    const { userId } = params
+    console.log('userId in route', userId)
+    try {
+      // 1. Fetch all shows from database
+      const shows = await showService.listShowsByUser(userId)
+      // 2. Respond with list of shows
+      res.status(200).send({
+        data: shows
+      })
+    } catch (e) {
+      // 3. If error, send to the error handler
+      next(e)
     }
   })
 

@@ -12,6 +12,15 @@ exports.listShows = async () => {
   }
 }
 
+exports.listShowsByUser = async (userId) => {
+  try {
+    const shows = await Show.find({user: userId})
+    return shows
+  } catch (e) {
+    throw e
+  }
+}
+
 exports.getShow = async (showId) => {
   try {
     const show = await Show.findById(showId)
@@ -26,7 +35,6 @@ exports.getShow = async (showId) => {
 // TODO: Need some validation here, for empty artists at least
 
 exports.createShow = async (showData = {}) => {
-  
   // 1. Create a show instance
   try {
     const show = new Show(showData)
@@ -52,7 +60,7 @@ exports.updateShow = async (showId, showData) => {
     venue,
     notes,
     seen,
-    ticket
+    ticket,
   } = showData
 
   show.artists = artists ? artists : show.artists,

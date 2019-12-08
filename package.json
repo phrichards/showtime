@@ -34,6 +34,7 @@
     "eslint": "^6.6.0",
     "express": "^4.17.1",
     "init-package-json": "^1.10.3",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.7.10",
     "nodemon": "^1.19.4",

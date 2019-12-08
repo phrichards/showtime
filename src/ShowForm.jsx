@@ -17,6 +17,8 @@ import {
     Typography,
 } from '@material-ui/core'
 
+import { getToken, verifyToken } from './services/tokenService';
+
 class ShowForm extends Component {
 
     constructor(props) {
@@ -30,10 +32,24 @@ class ShowForm extends Component {
             artistInputs: [],
             ticketChecked: false,
             seenChecked: false,
+            userId: null
         }
     }
 
     componentDidMount() {
+        const token = getToken()
+        const verified = verifyToken(token)
+
+        let userId = null
+
+        if (verified) {
+            userId = verified.user.id
+            this.setState({ userId })
+        }
+
+        console.log('verified', verified)
+        console.log('userId', userId)
+
         if (this.props.showData) {
             const artistInputArray = this.props.showData.artists.map(artist => <TextField value={artist} onChange={this.handleArtistChange} name={artist} />)
             this.setState({
@@ -42,7 +58,7 @@ class ShowForm extends Component {
                 ticketChecked: this.props.showData.ticket,
                 seenChecked: this.props.showData.seen,
                 venue: this.props.showData.venue,
-                notes: this.props.showData.notes
+                notes: this.props.showData.notes,
             })
         }
         
@@ -84,16 +100,17 @@ class ShowForm extends Component {
         this.setState({ ...this.state, [name]: event.target.checked })
     }
 
-    handleFormSubmit = async e => {
-        e.preventDefault()
+    handleFormSubmit = async event => {
+        event.preventDefault()
         
         const showData = {
             artists: this.state.artists,
             date: this.state.date,
             notes: this.state.notes,
-            venue: e.target.venue.value,
+            venue: event.target.venue.value,
             seen: this.state.seenChecked,
-            ticket: this.state.ticketChecked
+            ticket: this.state.ticketChecked,
+            user: this.state.userId
         }
 
         let url = ''
@@ -144,6 +161,7 @@ class ShowForm extends Component {
     render() {
         return (
             <Typography variant="body2" color="textSecondary" component="p">
+                <p>User ID:</p>
                 <form onSubmit={this.handleFormSubmit}>
                     {this.state.artists.map((artist, index) => (
                         <div className="artist">

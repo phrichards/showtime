@@ -3,6 +3,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+require('../users/userModel');
+
 // Map to fields in the DB
 const showSchema = exports.schema = new Schema({
   artists: Array,
@@ -11,7 +13,11 @@ const showSchema = exports.schema = new Schema({
   venue: String,
   seen: Boolean,
   ticket: Boolean,
-  notes: String
+  notes: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
 })
 
 exports.model = mongoose.model('Show', showSchema)

@@ -5,7 +5,7 @@ const userRouter = express.Router()
 
 const { requiresAuth } = require('../../middleware/requiresAuth')
 
-const { UserModel } = require('./userModel')
+const tokenService = require('../../utils/tokenService')
 const userService = require('./userService')
 
 userRouter.route('/')
@@ -25,18 +25,22 @@ userRouter.route('/')
 userRouter.route('/login')
     .post(async (req, res, next) => {
         const { email, password } = req.body
+        console.log('login request')
+        console.log(email)
+        console.log(password)
         try {
-            const user = await UserModel.findOne({ email })
+            const user = await userService.getUser(email)
 
             if (user) {
                 const match = await user.comparePassword(password)
                 if (match) {
-                    const token = issueToken(user)
+                    const token = tokenService.issueToken(user)
                     res.json({
                         access_token: token,
                         refresh_token: null,
                         refresh: '/api/users/login/refresh'
                     })
+                    tokenService.setToken(token)
                 } else {
                     res.status(401).send()
                 }
@@ -44,6 +48,7 @@ userRouter.route('/login')
                 res.status(404).send()
             }
         } catch (err) {
+            console.log('error', err)
             next(err)
         }
     })

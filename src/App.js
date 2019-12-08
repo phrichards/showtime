@@ -18,6 +18,8 @@ import ShowList from './ShowList'
 import DetailedShow from './DetailedShow'
 import AddShow from './AddShow'
 
+import { getToken, verifyToken } from './services/tokenService';
+
 class App extends Component {
 
   // IMPORTANT
@@ -30,11 +32,14 @@ class App extends Component {
 
     this.state = {
       shows: [],
+      loggedIn: false,
     }
   }
 
   async componentDidMount() {
-    const result = await fetch('/api/shows')
+    const token = getToken()
+    const verified = verifyToken(token)
+    const result = await fetch(`/api/shows/user/${verified.user.id}`)
     const data = await result.json()
     const prevState = this.state
     const newState = { shows: data.data }
@@ -59,6 +64,12 @@ class App extends Component {
     const newState = { shows: updatedShows }
     const nextState = Object.assign({}, prevState, newState)
     this.setState(nextState)
+  }
+
+  setUserStatus = (status) => {
+    if (status) {
+      this.setState({ loggedIn: true })
+    }
   }
 
   deleteShow = async id => {
@@ -93,7 +104,9 @@ class App extends Component {
                     <ShowList
                       {...renderProps}
                       shows={this.state.shows}
-                      updateShow={this.updateShow} deleteShow={this.deleteShow}
+                      loggedIn={this.state.loggedIn}
+                      updateShow={this.updateShow} 
+                      deleteShow={this.deleteShow}
                       addNewShow={this.addNewShow}
                     />
                   )}
@@ -102,7 +115,7 @@ class App extends Component {
                   exact path='/login'
                   render={() => {
                     return (
-                      <Login />
+                      <Login setUserStatus={this.setUserStatus} />
                     )
                   }}
                 />
