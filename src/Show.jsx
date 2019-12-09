@@ -25,7 +25,8 @@ class Show extends Component {
             date: null,
             venue: null,
             artists: [],
-            ticket: false
+            ticket: false,
+            seen: false
         }
     }
 
@@ -35,7 +36,8 @@ class Show extends Component {
             date,
             venue,
             artists,
-            ticket
+            ticket,
+            seen
         } = this.props.data
 
         this.setState({
@@ -43,7 +45,8 @@ class Show extends Component {
             date,
             venue,
             artists,
-            ticket
+            ticket,
+            seen
         })
     }
 
@@ -73,7 +76,7 @@ class Show extends Component {
                                     </ListItem>
                                 </List>
                                 {
-                                    !this.state.ticket
+                                    !this.state.ticket && !this.state.seen 
                                     ? <p style={{color: 'red'}}>Remember to buy a ticket!</p>
                                     : null
                                 }

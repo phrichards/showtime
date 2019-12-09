@@ -217,6 +217,7 @@ class ShowForm extends Component {
                         label="Did you attend this show?"
                     />
 
+                    <h3>Notes</h3>
                     <p>
                         <TextField 
                             multiline rows="10" 

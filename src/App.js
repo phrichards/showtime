@@ -21,6 +21,7 @@ import {
 import './App.css';
 
 import Login from './Login'
+import Register from './Register'
 import ShowList from './ShowList'
 import DetailedShow from './DetailedShow'
 import AddShow from './AddShow'
@@ -143,6 +144,14 @@ class App extends Component {
                   render={() => {
                     return (
                       <Login fetchShows={this.fetchShows} />
+                    )
+                  }}
+                />
+                <Route
+                  exact path='/register'
+                  render={() => {
+                    return (
+                      <Register />
                     )
                   }}
                 />
