@@ -14,7 +14,7 @@ class Shows extends Component {
             <div className="show-list">
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
-                    <h1>Shows I've Seen</h1>
+                    <h2>Shows I've Seen</h2>
                     {
                         this.props.shows.map((show) => {
                             {
@@ -27,7 +27,7 @@ class Shows extends Component {
                     </Grid>
 
                     <Grid item xs={6}>
-                    <h1>Upcoming Shows</h1>
+                    <h2>Upcoming Shows</h2>
                     {
                         this.props.shows.map((show) => {
                             {

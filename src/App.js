@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -12,6 +13,11 @@ import {
   Button
 } from '@material-ui/core'
 
+import { 
+  createMuiTheme,
+  MuiThemeProvider
+} from '@material-ui/core/styles';
+
 import './App.css';
 
 import Login from './Login'
@@ -20,6 +26,23 @@ import DetailedShow from './DetailedShow'
 import AddShow from './AddShow'
 
 import { getToken, verifyToken, removeToken } from './services/tokenService';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#757ce8',
+      main: '#1976d2',
+      dark: '#002884',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#fff',
+    },
+  },
+});
 
 class App extends Component {
 
@@ -94,7 +117,7 @@ class App extends Component {
 
   render() {
     return (
-      <>
+      <MuiThemeProvider theme={theme}>
         <header className='App-header'>
           <h1><a href="/">Showtime</a></h1>
         </header>
@@ -154,7 +177,7 @@ class App extends Component {
             }
           </Container>
         </div>
-      </>
+      </MuiThemeProvider>
     );
   }
 }

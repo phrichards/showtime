@@ -38,8 +38,6 @@ class Show extends Component {
             ticket
         } = this.props.data
 
-        console.log(this.props.data)
-
         this.setState({
             _id, 
             date,
@@ -80,7 +78,7 @@ class Show extends Component {
                                     : null
                                 }
                             </div>
-                            <Button variant="contained" color="primary" href={`/show/${this.state._id}`}>Detail</Button>
+                            <Button color="primary" href={`/show/${this.state._id}`}>Detail</Button>
                         </Typography>
                 </CardContent>
             </Card>
