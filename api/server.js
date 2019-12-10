@@ -47,7 +47,7 @@ app.use((err, req, res, next) => {
 
 })
 
-// TODO this is dumb, rename them
+// FIXME this is dumb, rename them
 // app.use(handleValidationError.handleValidationError())
 // app.use(handleErrors.handleErrors())
 

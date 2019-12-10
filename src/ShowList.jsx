@@ -17,6 +17,7 @@ class ShowList extends Component {
         }
     }
 
+    // TODO: sort shows by date
     render() {
         return (
             <>

@@ -49,9 +49,9 @@ class Login extends Component {
                 this.props.fetchShows()
                 return this.props.history.push("/")
             }
-        } catch (error) {
-            console.error(error)
-            throw error
+        } catch (err) {
+            console.error(err)
+            throw err
         }
     }
 
@@ -63,6 +63,8 @@ class Login extends Component {
                     <p><TextField fullWidth label="Password" type="password" value={this.state.password} onChange={this.handlePasswordChange} /></p>
                     <p><Button variant="contained" color="primary" type="submit">Log In</Button></p>
                 </form>
+                {/* TODO: Fix styling */}
+                <p><Button href="/register" variant="contained" color="secondary">Register</Button></p>
             </>
         )
     }

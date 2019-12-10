@@ -142,13 +142,13 @@ class ShowForm extends Component {
                 this.props.addNewShow(newShow)
                 return this.props.history.push("/")
             }
-        } catch(error) {
-            console.error(error)
-            throw error
+        } catch(err) {
+            console.error(err)
+            throw err
         }
     }
 
-    deleteShow = async () => {
+    deleteShow = () => {
         var confirmDelete = window.confirm('Delete this show?')
         if (confirmDelete) {
             this.props.deleteShow(this.props.showData._id)
@@ -231,9 +231,8 @@ class ShowForm extends Component {
                     this.props.type 
                         ? 
                             <>
-                            <Button type="submit">Save show</Button>
+                            <Button type="submit" color="primary">Save show</Button>
                             <Button
-                                variant="contained"
                                 color="secondary"
                                 className="delete"
                                 onClick={this.deleteShow}

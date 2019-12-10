@@ -15,9 +15,9 @@ router.route('/')
       res.status(200).send({
         data: shows
       })
-    } catch (e) {
+    } catch (err) {
       // 3. If error, send to the error handler
-      next(e)
+      next(err)
     }
   })
 
@@ -52,14 +52,15 @@ router.route('/user/:userId')
       res.status(200).send({
         data: shows
       })
-    } catch (e) {
+    } catch (err) {
       // 3. If error, send to the error handler
-      next(e)
+      next(err)
     }
   })
 
 // POST /shows/
-// TODO: don't return 200 if no data is passed. What should be required?
+// FIXME: don't return 200 if no data is passed. What should be required?
+// TODO: verify show doesn't already exist (not sure how)
 
 router.route('/add')
   .post(async (req, res, next) => {
@@ -70,12 +71,10 @@ router.route('/add')
       // 2. Create show from data
       const show = await showService.createShow(body)
       // 3. Respond with created show
-      res.status(200).send({
-        data: [show]
-      })
-    } catch (e) {
+      res.status(200).send({ data: [show] })
+    } catch (err) {
       // 4. If error, send to the error handler
-      next(e)
+      next(err)
     }
   })
 
@@ -93,9 +92,9 @@ router.route('/update/:showId')
       res.status(200).send({
         data: [show]
       })
-    } catch (e) {
+    } catch (err) {
       // 4. If error, send to the error handler
-      next(e)
+      next(err)
     }
   })
 
@@ -108,9 +107,9 @@ router.route('/delete/:showId')
       const show = await showService.deleteShow(showId)
       // 3. Respond with created show
       res.status(204).json({ data: "Show deleted" })
-    } catch (e) {
+    } catch (err) {
       // 4. If error, send to the error handler
-      next(e)
+      next(err)
     }
   })
 

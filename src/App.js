@@ -52,11 +52,14 @@ class App extends Component {
   // Handle error at route level, last middleware after all routes
   // Services should throw errors up to router/controller
 
+  // TODO SOME PRIORITIES -  2. add redirects to router for logged in state. 3. make sure right errors are being thrown in api. 4. add verification for new shows. 5. add /me route and the auth middleware
+
   constructor() {
     super()
 
     this.state = {
       shows: [],
+      token: null
     }
   }
 
@@ -65,15 +68,19 @@ class App extends Component {
   }
 
   fetchShows = async () => {
-    const token = getToken()
-    const verified = verifyToken(token)
-    if (typeof (verified.user) !== 'undefined') {
-      const result = await fetch(`/api/shows/user/${verified.user.id}`)
-      const data = await result.json()
-      const prevState = this.state
-      const newState = { shows: data.data }
-      const nextState = Object.assign({}, prevState, newState)
-      this.setState(nextState)
+    try {
+      const token = getToken()
+      const verified = verifyToken(token)
+      if (typeof (verified.user) !== 'undefined') {
+        const result = await fetch(`/api/shows/user/${verified.user.id}`)
+        const data = await result.json()
+        const prevState = this.state
+        const newState = { shows: data.data, token: token }
+        const nextState = Object.assign({}, prevState, newState)
+        this.setState(nextState)
+      }
+    } catch (err) {
+      throw err
     }
   }
 
@@ -105,9 +112,9 @@ class App extends Component {
         },
       });
       this.setState(prevState => ({ shows: prevState.shows.filter(show => show._id !== id) }));
-    } catch (error) {
-      console.error(error)
-      throw error
+    } catch (err) {
+      console.error(err)
+      throw err
     }
   }
 
@@ -115,6 +122,8 @@ class App extends Component {
     removeToken()
     window.location = '/login'
   }
+
+  // FIXME all routes should redirect to /login if not logged in 
 
   render() {
     return (
@@ -128,53 +137,55 @@ class App extends Component {
               <Switch>
                 <Route
                   exact path='/'
-                  render={(renderProps) => (
-                    <ShowList
-                      {...renderProps}
-                      shows={this.state.shows}
-                      loggedIn={this.state.loggedIn}
-                      updateShow={this.updateShow} 
-                      deleteShow={this.deleteShow}
-                      addNewShow={this.addNewShow}
-                    />
-                  )}
+                  render={(renderProps) => {
+                    return (this.state.token)
+                      ? <ShowList
+                        {...renderProps}
+                        shows={this.state.shows}
+                        loggedIn={this.state.loggedIn}
+                        updateShow={this.updateShow}
+                        deleteShow={this.deleteShow}
+                        addNewShow={this.addNewShow}
+                      />
+                      : <Redirect to='/login' />
+                  }}
                 />
                 <Route
-                  exact path='/login'
-                  render={() => {
-                    return (
-                      <Login fetchShows={this.fetchShows} />
-                    )
+                  path='/login'
+                  render={(renderProps) => {
+                    return (this.state.token)
+                      ? <Redirect to='/' fetchShows={this.fetchShows} />
+                      : <Login fetchShows={this.fetchShows} />
                   }}
                 />
                 <Route
                   exact path='/register'
-                  render={() => {
-                    return (
-                      <Register />
-                    )
+                  render={(renderProps) => {
+                    return (this.state.token)
+                      ? <Redirect to='/' fetchShows={this.fetchShows} />
+                      : <Register />
                   }}
                 />
                 <Route
                   exact path='/show/:showId'
                   render={(renderProps) => {
-                    return (
-                        <DetailedShow
-                          {...renderProps}
-                          updateShow={this.updateShow} deleteShow={this.deleteShow}
-                        />
-                      )
+                    return <DetailedShow
+                        {...renderProps}
+                        updateShow={this.updateShow} deleteShow={this.deleteShow}
+                      />
                   }}
                 />
                 <Route
                   exact path='/add'
                   render={(renderProps) => {
-                    return (
-                      <AddShow
+                    return (this.state.token)
+                      ? <AddShow
                         {...renderProps}
-                        addNewShow={this.addNewShow} deleteShow={this.deleteShow}
+                        addNewShow={this.addNewShow} 
+                        deleteShow={this.deleteShow}
+                        fetchShows={this.fetchShows}
                       />
-                    )
+                      : <Redirect to='/login' />
                   }}
                 />
               </Switch>

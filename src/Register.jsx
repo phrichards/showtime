@@ -41,12 +41,15 @@ class Register extends Component {
                 body: JSON.stringify(userData)
             })
 
-            const user = await response.json()
-
-            return this.props.history.push("/login")
-        } catch (error) {
-            console.error(error)
-            throw error
+            // const user = await response.json()
+            if (response.ok) {
+                return this.props.history.push("/login")
+            } else {
+                console.log('Error, try again')
+            }
+        } catch (err) {
+            console.error(err)
+            throw err
         }
     }
 

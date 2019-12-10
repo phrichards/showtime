@@ -7,8 +7,8 @@ exports.listShows = async () => {
   try {
     const shows = await Show.find({})
     return shows
-  } catch (e) {
-    throw e
+  } catch (err) {
+    throw err
   }
 }
 
@@ -16,8 +16,8 @@ exports.listShowsByUser = async (userId) => {
   try {
     const shows = await Show.find({user: userId})
     return shows
-  } catch (e) {
-    throw e
+  } catch (err) {
+    throw err
   }
 }
 
@@ -42,9 +42,9 @@ exports.createShow = async (showData = {}) => {
     const doc = await show.save()
     // 3. return with created show
     return doc
-  } catch (e) {
+  } catch (err) {
     // 4. If error, throw and controller will catch
-    throw e
+    throw err
   }
 }
 
@@ -76,9 +76,9 @@ exports.updateShow = async (showId, showData) => {
     const doc = await show.save()
     // 3. return with created show
     return doc
-  } catch (e) {
+  } catch (err) {
     // 4. If error, throw and controller will catch
-    throw e
+    throw err
   }
 }
 
@@ -91,8 +91,8 @@ exports.deleteShow = async (showId) => {
     const deleted = await show.remove({_id: showId})
     // 3. return with created show
     return deleted
-  } catch (e) {
+  } catch (err) {
     // 4. If error, throw and controller will catch
-    throw e
+    throw err
   }
 }

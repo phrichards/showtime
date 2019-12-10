@@ -10,12 +10,17 @@ userRouter.route('/')
     .post(async (req, res, next) => {
         const { email, password } = req.body
         try {
-            const user = await userService.createUser({email, password})
-            const doc = await user.save()
-            res.status(201).json(doc)
-        } catch (err) {
-            console.log('error', err)
-            next(err)
+            const user = await userService.getUser(email)
+            if (user) {
+                res.status(409).json({ data: 'User with that email already exists' })
+            } else {
+                const newUser = await userService.createUser({email, password})
+                const doc = await newUser.save()
+                res.status(201).send()
+            }
+        } catch (error) {
+            console.log('error', error)
+            next(error)
         }
     })
 
@@ -40,9 +45,9 @@ userRouter.route('/login')
             } else {
                 res.status(404).send()
             }
-        } catch (err) {
-            console.log('error', err)
-            next(err)
+        } catch (error) {
+            console.log('error', error)
+            next(error)
         }
     })
 

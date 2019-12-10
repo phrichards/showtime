@@ -14,7 +14,7 @@ exports.listUsers = async () => {
 exports.getUser = async (email) => {
     try {
         const user = await User.findOne({ email })
-        return user || {}
+        return user || null
     } catch (err) {
         console.error(err)
         throw err
@@ -26,9 +26,9 @@ exports.getUser = async (email) => {
 exports.createUser = async (userData = {}) => {
     try {
         const user = new User(userData)
-        
+
         const doc = await user.save()
-        
+
         return doc
     } catch (e) {
         // 4. If error, throw and controller will catch
@@ -57,10 +57,10 @@ exports.deleteUser = async (userId) => {
     const user = await User.findById(userId)
 
     try {
-        const deleted = await user.remove({_id: userId})
+        const deleted = await user.remove({ _id: userId })
         return deleted
     } catch (e) {
-        
+
         throw e
     }
 }
