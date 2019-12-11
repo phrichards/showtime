@@ -52,7 +52,7 @@ class App extends Component {
     // Handle error at route level, last middleware after all routes
     // Services should throw errors up to router/controller
 
-    // TODO SOME PRIORITIES -  3. make sure right errors are being thrown in api. 4. add verification for new shows.
+    // TODO: add general redirect for routes that don't exist
 
     constructor() {
         super()
@@ -178,31 +178,16 @@ class App extends Component {
                                     path='/login'
                                     render={(renderProps) => {
                                         return (token)
-                                        ? <Redirect to='/shows'/>
+                                        ? <Redirect to='/'/>
                                         : <Login fetchUser={this.fetchUser} />
                                         
-                                    }}
-                                />
-                                <Route
-                                    exact path='/shows'
-                                    render={(renderProps) => {
-                                        return (token)
-                                        ? <ShowList
-                                            updateShow={this.updateShow}
-                                            addNewShow={this.addNewShow}
-                                            deleteShow={this.deleteShow}
-                                            shows={this.state.shows}
-                                            fetchShows={this.fetchShows}
-                                        />
-                                        : <Redirect to='/login' fetchUser={this.fetchUser} />
-
                                     }}
                                 />
                                 <Route
                                     exact path='/register'
                                     render={(renderProps) => {
                                         return (token)
-                                        ? <Redirect to='/shows'/>
+                                        ? <Redirect to='/'/>
                                         : <Register />
                                     }}
                                 />
@@ -225,6 +210,14 @@ class App extends Component {
                                         return (token)
                                         ? <AddShow addNewShow={this.addNewShow}/>
                                         : <Redirect to='/login' fetchUser={this.fetchUser} />
+                                    }}
+                                />
+                                <Route
+                                    path='*'
+                                    render={(renderProps) => {
+                                        return (token)
+                                            ? <Redirect to='/' />
+                                            : <Redirect to='/login' fetchUser={this.fetchUser} />
                                     }}
                                 />
                             </Switch>

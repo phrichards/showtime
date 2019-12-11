@@ -40,9 +40,7 @@ exports.createUser = async (userData = {}) => {
     try {
         const user = new User(userData)
 
-        const doc = await user.save()
-
-        return doc
+        return await user.save()
     } catch (e) {
         // 4. If error, throw and controller will catch
         throw e

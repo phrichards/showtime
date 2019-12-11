@@ -22,20 +22,24 @@ router.route('/')
   })
 
 router.route('/:showId')
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const { params } = req
     const { showId } = params
-    try {
-      const show = await showService.getShow(showId)
+    if (showId.match(/^[0-9a-fA-F]{24}$/)) {
+      try {
+        const show = await showService.getShow(showId)
 
-      if (show) {
-        res.status(200).json({data: [show]})
-      } else {
-        // we got a bad number
-        res.status(404).send()
+        if (show) {
+          res.status(200).json({data: [show]})
+        } else {
+          // we got a bad number
+          res.status(404).send()
+        }
+      } catch (err) {
+        next(err)
       }
-    } catch (err) {
-      next(err)
+    } else {
+      res.status(404).send()
     }
   })
 

@@ -43,28 +43,33 @@ class DetailedShow extends Component {
 
     fetchShow = async showId => {
         const result = await fetch(`/api/shows/${showId}`)
-        const data = await result.json()
+        console.log('result', result.status)
+        if (result.status === 404) {
+            this.props.history.push('/')
+        } else {
+            const data = await result.json()
 
-        const {
-            _id,
-            date,
-            venue,
-            artists,
-            notes,
-            seen,
-            ticket
-        } = data.data[0]
+            const {
+                _id,
+                date,
+                venue,
+                artists,
+                notes,
+                seen,
+                ticket
+            } = data.data[0]
 
-        this.setState({
-            _id,
-            date,
-            venue,
-            artists,
-            notes,
-            seen,
-            ticket,
-            show: data.data[0]
-        })
+            this.setState({
+                _id,
+                date,
+                venue,
+                artists,
+                notes,
+                seen,
+                ticket,
+                show: data.data[0]
+            })
+        }
     }
 
 
@@ -152,7 +157,7 @@ class DetailedShow extends Component {
                                 <p><TextField disabled style={{width: 800}} multiline rows="10" value={this.state.notes}></TextField></p>
 
                                 <Button color="primary" onClick={this.toggleEditForm}>Edit Show</Button>
-                                <Button color="secondary" href="/shows">Back</Button>                      
+                                <Button color="secondary" href="/">Back</Button>                      
 
                             </Typography>
                         }

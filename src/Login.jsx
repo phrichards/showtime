@@ -27,6 +27,8 @@ class Login extends Component {
         this.setState({ password: event.target.value })
     }
 
+    // TODO: Add a message for failed login
+
     handleSubmit = async (e) => {
         e.preventDefault()
         try {
