@@ -13,7 +13,7 @@ class Login extends Component {
         super(props)
 
         this.state = {
-            username: '',
+            email: '',
             password: '',
             loggedIn: false,
         }
@@ -27,31 +27,24 @@ class Login extends Component {
         this.setState({ password: event.target.value })
     }
 
-    handleSubmit = async event => {
-        event.preventDefault()
-        const { email, password } = this.state
-        const userData = { email, password }
-
+    handleSubmit = async (e) => {
+        e.preventDefault()
         try {
+            const { email, password } = this.state
             const response = await fetch('/api/users/login', {
                 method: 'POST',
+                body: JSON.stringify({ email, password }),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(userData)
             })
-
-            const user = await response.json()
-
-            if (user.access_token) {
-                const token = user.access_token
-                setToken(token)
-                this.props.fetchShows()
-                return this.props.history.push("/")
-            }
+            const { data } = await response.json()
+            const [tokenData] = data
+            const { token } = tokenData
+            setToken(token)
+            this.props.fetchUser()
         } catch (err) {
             console.error(err)
-            throw err
         }
     }
 

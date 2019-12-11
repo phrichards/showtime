@@ -21,6 +21,20 @@ exports.getUser = async (email) => {
     }
 }
 
+exports.findUserById = async (id) => {
+    console.log('find by id', id)
+    try {
+        const user = await User.findById(id)
+        if (user) {
+            return user
+        } else {
+            throw new Error('bad data')
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
 // TODO: Need some validation here, for empty username at least
 
 exports.createUser = async (userData = {}) => {

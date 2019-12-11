@@ -7,15 +7,46 @@ import {
 
 import Shows from './Shows'
 
-import { getToken } from './services/tokenService';
+import { getToken, verifyToken } from './services/tokenService';
 
 class ShowList extends Component {
 
-    componentDidMount() {
-        if (!getToken()) {
-            this.props.history.push('/login')
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            shows: []
         }
     }
+
+    componentDidMount() {
+        // if (!getToken()) {
+        //     this.props.history.push('/login')
+        // }
+
+        console.log('show list props', this.props)
+        this.props.fetchShows()
+    }
+
+    // fetchShows = async () => {
+    //     console.log('fetch some shows')
+    //     try {
+    //         const token = getToken()
+    //         const verified = verifyToken(token)
+    //         console.log('verified', verified)
+    //         const result = await fetch(`/api/shows/user/${verified.user.id}`)
+    //         const data = await result.json()
+    //         console.log('shows', data.data)
+    //         const prevState = this.state
+    //         const newState = { shows: data.data, token: token }
+    //         const nextState = Object.assign({}, prevState, newState)
+    //         this.setState(nextState)
+    //     } catch (err) {
+    //         throw err
+    //     }
+    // }
+
+    
 
     // TODO: sort shows by date
     render() {
