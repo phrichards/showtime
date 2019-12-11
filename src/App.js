@@ -52,7 +52,7 @@ class App extends Component {
     // Handle error at route level, last middleware after all routes
     // Services should throw errors up to router/controller
 
-    // TODO SOME PRIORITIES -  2. add redirects to router for logged in state. 3. make sure right errors are being thrown in api. 4. add verification for new shows.
+    // TODO SOME PRIORITIES -  3. make sure right errors are being thrown in api. 4. add verification for new shows.
 
     constructor() {
         super()
@@ -98,8 +98,9 @@ class App extends Component {
                 const verified = verifyToken(token)
                 const result = await fetch(`/api/shows/user/${verified.user.id}`)
                 const data = await result.json()
+                const sortedData = data.data.sort((a, b) => (a.date > b.date) ? 1 : -1)
                 const prevState = this.state
-                const newState = { shows: data.data, token: token }
+                const newState = { shows: sortedData, token: token }
                 const nextState = Object.assign({}, prevState, newState)
                 this.setState(nextState)
             }
@@ -147,8 +148,6 @@ class App extends Component {
         removeToken()
         window.location = '/login'
     }
-
-    // FIXME all routes should redirect to /login if not logged in 
 
     render() {
         const token = getToken()

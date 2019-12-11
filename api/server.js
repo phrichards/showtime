@@ -47,10 +47,6 @@ app.use((err, req, res, next) => {
 
 })
 
-// FIXME this is dumb, rename them
-// app.use(handleValidationError.handleValidationError())
-// app.use(handleErrors.handleErrors())
-
 // 7. Start server
 mongoose
   .connect(URL, MONGO_CONFIG)

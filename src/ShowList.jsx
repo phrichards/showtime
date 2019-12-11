@@ -23,7 +23,6 @@ class ShowList extends Component {
         this.props.fetchShows()
     }
 
-    // TODO: sort shows by date
     render() {
         return (
             <>
