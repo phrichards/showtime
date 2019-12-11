@@ -19,18 +19,15 @@ userRouter.route('/')
                 const doc = await newUser.save()
                 res.status(201).send()
             }
-        } catch (error) {
-            console.log('error', error)
-            next(error)
+        } catch (err) {
+            next(err)
         }
     })
 
 userRouter.get('/me', requiresAuth, async (req, res, next) => {
-    console.log('get me')
     try {
         const { user: { id: userId } } = req.token
         const user = await userService.findUserById(userId)
-        console.log('me user', user)
         res.status(200).json({ data: [user] })
     } catch (err) {
         next(err)
@@ -53,9 +50,8 @@ userRouter.route('/login')
             } else {
                 res.status(404).send()
             }
-        } catch (error) {
-            console.log('error', error)
-            next(error)
+        } catch (err) {
+            next(err)
         }
     })
 

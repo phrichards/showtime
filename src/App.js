@@ -52,7 +52,7 @@ class App extends Component {
     // Handle error at route level, last middleware after all routes
     // Services should throw errors up to router/controller
 
-    // TODO SOME PRIORITIES -  2. add redirects to router for logged in state. 3. make sure right errors are being thrown in api. 4. add verification for new shows. 5. add /me route and the auth middleware
+    // TODO SOME PRIORITIES -  2. add redirects to router for logged in state. 3. make sure right errors are being thrown in api. 4. add verification for new shows.
 
     constructor() {
         super()
@@ -63,14 +63,18 @@ class App extends Component {
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.fetchShows()
+        const token = getToken()
+    }
+
+    componentDidUpdate() {
+        const token = getToken()
     }
 
     fetchUser = async () => {
         const token = getToken()
         if (token) {
-            console.log('yes token')
             try {
                 const response = await fetch('/api/users/me', {
                     headers: {
@@ -79,26 +83,21 @@ class App extends Component {
                 })
                 const { data } = await response.json()
                 const [user] = data
-                console.log('fetch user', user)
                 this.setState({ user })
             } catch (err) {
                 console.error(err)
             }
-        } else {
-            console.log('no token')
-        }
+        } 
     }
 
     fetchShows = async () => {
-        console.log('fetch some shows')
+        this.fetchUser()
         try {
             const token = getToken()
             if (token) {
                 const verified = verifyToken(token)
-                console.log('verified', verified)
                 const result = await fetch(`/api/shows/user/${verified.user.id}`)
                 const data = await result.json()
-                console.log('shows', data.data)
                 const prevState = this.state
                 const newState = { shows: data.data, token: token }
                 const nextState = Object.assign({}, prevState, newState)
@@ -110,6 +109,7 @@ class App extends Component {
     }
 
     addNewShow = newShow => {
+        this.fetchUser()
         const prevShows = this.state.shows
         const nextShows = [...prevShows, newShow.data[0]]
         const prevState = this.state
@@ -151,6 +151,7 @@ class App extends Component {
     // FIXME all routes should redirect to /login if not logged in 
 
     render() {
+        const token = getToken()
         return (
             <MuiThemeProvider theme={theme}>
                 <header className='App-header'>
@@ -163,55 +164,78 @@ class App extends Component {
                                 <Route
                                     exact path='/'
                                     render={(renderProps) => {
-                                        return <ShowList 
+                                        return (token)
+                                        ? <ShowList 
                                             updateShow={this.updateShow}
                                             addNewShow={this.addNewShow}
                                             deleteShow={this.deleteShow}
                                             shows={this.state.shows}
                                             fetchShows={this.fetchShows}
                                         />
+                                        : <Redirect to='/login' fetchUser={this.fetchUser}/>
                                     }}
                                 />
                                 <Route
                                     path='/login'
                                     render={(renderProps) => {
-                                        return (this.state.user)
-                                        ? <Redirect to='/' />
+                                        return (token)
+                                        ? <Redirect to='/shows'/>
                                         : <Login fetchUser={this.fetchUser} />
                                         
                                     }}
                                 />
                                 <Route
+                                    exact path='/shows'
+                                    render={(renderProps) => {
+                                        return (token)
+                                        ? <ShowList
+                                            updateShow={this.updateShow}
+                                            addNewShow={this.addNewShow}
+                                            deleteShow={this.deleteShow}
+                                            shows={this.state.shows}
+                                            fetchShows={this.fetchShows}
+                                        />
+                                        : <Redirect to='/login' fetchUser={this.fetchUser} />
+
+                                    }}
+                                />
+                                <Route
                                     exact path='/register'
                                     render={(renderProps) => {
-                                        return <Register />
+                                        return (token)
+                                        ? <Redirect to='/shows'/>
+                                        : <Register />
                                     }}
                                 />
                                 <Route
                                     exact path='/show/:showId'
                                     render={(renderProps) => {
-                                        return <DetailedShow 
+                                        return (token)
+                                        ? <DetailedShow 
                                             {...renderProps}
                                             updateShow={this.updateShow}
                                             addNewShow={this.addNewShow}
                                             deleteShow={this.deleteShow} 
                                         />
+                                        : <Redirect to='/login' fetchUser={this.fetchUser} />
                                     }}
                                 />
                                 <Route
                                     exact path='/add'
                                     render={(renderProps) => {
-                                        return <AddShow addNewShow={this.addNewShow}/>
+                                        return (token)
+                                        ? <AddShow addNewShow={this.addNewShow}/>
+                                        : <Redirect to='/login' fetchUser={this.fetchUser} />
                                     }}
                                 />
                             </Switch>
                         </Router>
-                        {
-                            getToken()
-                                ? <p><Button variant="contained" color="secondary" onClick={this.handleLogout}>Log out</Button></p>
-                                : null
-                        }
                     </Container>
+                    {
+                        getToken()
+                            ? <p><Button variant="contained" color="secondary" onClick={this.handleLogout}>Log out</Button></p>
+                            : null
+                    }
                 </div>
             </MuiThemeProvider>
         );

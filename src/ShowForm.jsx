@@ -91,7 +91,6 @@ class ShowForm extends Component {
 
 
     handleDateChange = date => {
-        console.log('date', date)
         this.setState({ date: date })
     }
 

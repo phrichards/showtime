@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const SECRET = 'make it something super secret'
 
 exports.setToken = (token) => {
-    console.log('set token', token)
     localStorage.setItem('token', token);
 };
 
@@ -16,7 +15,6 @@ exports.removeToken = () => {
 };
 
 exports.verifyToken = (token) => {
-    console.log("verify", token)
     try {
         return jwt.verify(token, SECRET)
     } catch (err) {

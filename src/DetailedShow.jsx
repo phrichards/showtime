@@ -29,20 +29,22 @@ class DetailedShow extends Component {
             notes: '',
             artists: [],
             seen: false,
-            ticket: false
+            ticket: false,
+            showId: null
         }
     }
 
     componentDidMount() {
         const params = { ...this.props.match.params }
         const showId = params.showId
+        this.setState({ showId })
         this.fetchShow(showId)
     }
 
     fetchShow = async showId => {
         const result = await fetch(`/api/shows/${showId}`)
         const data = await result.json()
-    
+
         const {
             _id,
             date,
@@ -51,7 +53,7 @@ class DetailedShow extends Component {
             notes,
             seen,
             ticket
-        } = data
+        } = data.data[0]
 
         this.setState({
             _id,
@@ -61,7 +63,7 @@ class DetailedShow extends Component {
             notes,
             seen,
             ticket,
-            show: data
+            show: data.data[0]
         })
     }
 
@@ -85,7 +87,7 @@ class DetailedShow extends Component {
                 <Card style={{ maxWidth: 1200 }}>
                     <CardContent>
                         {this.state.toggleEditForm
-                            ? <ShowForm type="update" updateShow={this.updateShow} toggleEditForm={this.toggleEditForm} handleVenueChange={this.handleVenueChange} showData={this.state.show} deleteShow={this.props.deleteShow} />
+                            ? <ShowForm type="update" updateShow={this.updateShow} toggleEditForm={this.toggleEditForm} handleVenueChange={this.handleVenueChange} showData={this.state.show} deleteShow={this.props.deleteShow} showId={this.state.showId} />
                             :
                             <Typography variant="body2" color="textSecondary" component="p">
                                 <Grid container spacing={3}>
@@ -150,7 +152,7 @@ class DetailedShow extends Component {
                                 <p><TextField disabled style={{width: 800}} multiline rows="10" value={this.state.notes}></TextField></p>
 
                                 <Button color="primary" onClick={this.toggleEditForm}>Edit Show</Button>
-                                <Button color="secondary" href="/">Back</Button>                      
+                                <Button color="secondary" href="/shows">Back</Button>                      
 
                             </Typography>
                         }

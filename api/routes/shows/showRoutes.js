@@ -29,14 +29,13 @@ router.route('/:showId')
       const show = await showService.getShow(showId)
 
       if (show) {
-        res.json(show)
+        res.status(200).json({data: [show]})
       } else {
         // we got a bad number
         res.status(404).send()
       }
     } catch (err) {
-      console.log('error', err)
-      throw(err)
+      next(err)
     }
   })
 
@@ -66,7 +65,6 @@ router.route('/add')
   .post(async (req, res, next) => {
     // 1. Get data from request body
     const { body } = req
-
     try {
       // 2. Create show from data
       const show = await showService.createShow(body)
@@ -89,9 +87,7 @@ router.route('/update/:showId')
       // 2. Create show from data
       const show = await showService.updateShow(showId, showData)
       // 3. Respond with created show
-      res.status(200).send({
-        data: [show]
-      })
+      res.status(200).send({data: [show]})
     } catch (err) {
       // 4. If error, send to the error handler
       next(err)
@@ -106,7 +102,7 @@ router.route('/delete/:showId')
       // 2. Create show from data
       const show = await showService.deleteShow(showId)
       // 3. Respond with created show
-      res.status(204).json({ data: "Show deleted" })
+      res.status(204).json({ data: ["Show deleted"] })
     } catch (err) {
       // 4. If error, send to the error handler
       next(err)

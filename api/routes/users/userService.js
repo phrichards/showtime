@@ -22,7 +22,6 @@ exports.getUser = async (email) => {
 }
 
 exports.findUserById = async (id) => {
-    console.log('find by id', id)
     try {
         const user = await User.findById(id)
         if (user) {
