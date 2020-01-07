@@ -39,17 +39,20 @@ userRouter.route('/login')
         const { email, password } = req.body
         try {
             const user = await userService.getUser(email)
-            if (user) {
-                const match = await user.comparePassword(password)
-                if (match) {
-                    const token = tokenService.issueToken(user)
-                    res.status(200).json({ data: [{ token }] })
-                } else {
-                    res.status(401).send()
-                }
-            } else {
+            // We could improve readability here by inverting the checks:
+
+            if (!user) {
                 res.status(404).send()
             }
+
+            const match = await user.comparePassword(password)
+            if (!match) {
+                res.status(401).send()
+            }
+            
+            const token = tokenService.issueToken(user)
+            res.status(200).json({ data: [{ token }] })
+
         } catch (err) {
             next(err)
         }

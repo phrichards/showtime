@@ -86,6 +86,7 @@ class DetailedShow extends Component {
     }
     
     render() {
+        // This component is fairly large, and it would probablt be easier to reason about if we broke it up into smaller pieces
         return (
             <>
                 <h2>Show Detail</h2>
