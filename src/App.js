@@ -52,6 +52,7 @@ class App extends Component {
     // Handle error at route level, last middleware after all routes
     // Services should throw errors up to router/controller
 
+    // Love the todos and planning!
     // TODO: add general redirect for routes that don't exist
 
     constructor() {
@@ -105,6 +106,7 @@ class App extends Component {
                 this.setState(nextState)
             }
         } catch (err) {
+            // If we're catching an error just to throw it again, we can just omit the try/catch altogether and it will achieve the same thing
             throw err
         }
     }
@@ -122,6 +124,7 @@ class App extends Component {
     updateShow = showData => {
         const prevShows = this.state.shows
         const prevState = this.state
+        // This variable is never used (showToUpdate), adding a tool like eslint could help catch these sorts of things to improve readability
         const showToUpdate = prevShows.find(show => show._id === showData.data[0]._id)
         const updatedShows = this.state.shows.map(show => (show._id === showData.data[0]._id ? Object.assign(show, showData.data[0]) : show))
         const newState = { shows: updatedShows }
