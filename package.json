@@ -36,7 +36,7 @@
     "init-package-json": "^1.10.3",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
-    "mongoose": "^6.13.6",
+    "mongoose": "^6.13.10",
     "nodemon": "^3.1.14",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
